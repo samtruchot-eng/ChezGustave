@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { REFERRAL_BONUS_CHF } from "@/lib/constants";
 import { formatCHF } from "@/lib/utils";
+import { isAdminEmail } from "@/lib/admin";
 import { logout } from "./actions";
 
 export const metadata = { title: "Profil" };
@@ -83,6 +84,18 @@ export default async function ProfilPage() {
         <Stat label="Réservations" value={bookingsCount} />
         <Stat label="Favoris" value={favoritesCount} />
       </section>
+
+      {/* Accès admin (réservé) */}
+      {isAdminEmail(me.email) && (
+        <Link
+          href="/admin"
+          className="card flex items-center gap-3 bg-ink p-4 text-cream hover:opacity-95"
+        >
+          <span className="text-xl">👑</span>
+          <span className="flex-1 font-medium">Espace administrateur</span>
+          <span className="text-cream/70">›</span>
+        </Link>
+      )}
 
       {/* Liens du tableau de bord */}
       <section className="card divide-y divide-line">
