@@ -10,16 +10,23 @@ chien — contre rémunération. Le positionnement unique : le gardien est à la
 
 ---
 
-## 🚀 Démarrage rapide
+## ☁️ Mise en ligne (Vercel)
+
+👉 **Guide pas à pas dans [`DEPLOY-VERCEL.md`](./DEPLOY-VERCEL.md)** (base Neon
+gratuite + Vercel, ~10 min, sans commande à taper).
+
+## 🚀 Démarrage rapide (local)
 
 ```bash
 # 1. Installer les dépendances
 npm install
 
 # 2. Configurer l'environnement
-cp .env.example .env        # les valeurs par défaut (SQLite) suffisent en dev
+cp .env.example .env
+#   → renseignez DATABASE_URL avec une base PostgreSQL
+#     (créez-en une gratuitement sur https://neon.tech)
 
-# 3. Créer la base et injecter les données de démo
+# 3. Créer les tables et injecter les données de démo
 npm run db:push
 npm run db:seed
 
@@ -102,18 +109,17 @@ src/
 
 ---
 
-## 🗄️ Migration SQLite → PostgreSQL (production)
+## 🗄️ Base de données
 
-Le schéma est pensé pour être portable :
+Le projet utilise **PostgreSQL** (via Prisma). En local comme en production,
+`DATABASE_URL` doit pointer vers une base Postgres — le plus simple est une base
+gratuite sur [Neon](https://neon.tech).
 
-1. Dans `prisma/schema.prisma`, remplacer `provider = "sqlite"` par
-   `provider = "postgresql"`.
-2. Dans `.env`, pointer `DATABASE_URL` vers votre base Postgres
-   (ex. Neon, Supabase, Railway).
-3. Les listes (animaux, ambiances, activités) sont déjà stockées en JSON via
-   des helpers (`jsonList` / `toJsonList`), et les « enums » sont des chaînes
-   avec des constantes applicatives (`src/lib/constants.ts`) — rien à changer.
-4. `npm run db:push && npm run db:seed`.
+- Les tables sont créées automatiquement au déploiement (`prisma db push` est
+  inclus dans le build), ou en local avec `npm run db:push`.
+- Les listes (animaux, ambiances, activités) sont stockées en JSON via des
+  helpers (`jsonList` / `toJsonList`) ; les « enums » sont des chaînes avec des
+  constantes applicatives (`src/lib/constants.ts`).
 
 ---
 

@@ -18,11 +18,11 @@ export async function getListings(filters: DiscoverFilters = {}) {
       ...(q
         ? {
             OR: [
-              { title: { contains: q } },
-              { region: { contains: q } },
-              { description: { contains: q } },
-              { dog: { is: { name: { contains: q } } } },
-              { dog: { is: { breed: { contains: q } } } },
+              { title: { contains: q, mode: "insensitive" } },
+              { region: { contains: q, mode: "insensitive" } },
+              { description: { contains: q, mode: "insensitive" } },
+              { dog: { is: { name: { contains: q, mode: "insensitive" } } } },
+              { dog: { is: { breed: { contains: q, mode: "insensitive" } } } },
             ],
           }
         : {}),
@@ -60,10 +60,10 @@ export async function getSitters(filters: DiscoverFilters = {}) {
       ...(q
         ? {
             OR: [
-              { firstName: { contains: q } },
-              { region: { contains: q } },
-              { headline: { contains: q } },
-              { bio: { contains: q } },
+              { firstName: { contains: q, mode: "insensitive" } },
+              { region: { contains: q, mode: "insensitive" } },
+              { headline: { contains: q, mode: "insensitive" } },
+              { bio: { contains: q, mode: "insensitive" } },
             ],
           }
         : {}),

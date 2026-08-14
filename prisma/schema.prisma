@@ -2,14 +2,14 @@
 // Chez Gustave — schéma de base de données
 // Plateforme de garde de chien à domicile · Suisse romande
 //
-// Dev  : SQLite  (provider = "sqlite",  DATABASE_URL="file:./dev.db")
-// Prod : PostgreSQL — voir NOTES-MIGRATION dans le README.
+// Base : PostgreSQL (Neon, Supabase, Vercel Postgres…).
+// DATABASE_URL doit pointer vers une base Postgres.
 //
-// Choix de portabilité SQLite -> Postgres :
+// Conventions :
 //  - pas d'enum natif : on utilise des String + constantes applicatives
-//    (voir src/lib/constants.ts)
-//  - pas de tableau scalaire : les listes sont stockées en JSON (String)
-//    et lues via des helpers.
+//    (voir src/lib/constants.ts) — plus souple pour faire évoluer les valeurs.
+//  - les listes (animaux, ambiances, activités) sont stockées en JSON (String)
+//    et lues via des helpers (jsonList / toJsonList).
 // ------------------------------------------------------------------
 
 generator client {
@@ -17,7 +17,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
