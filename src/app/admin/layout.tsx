@@ -17,6 +17,7 @@ export default async function AdminLayout({
     { href: "/admin/candidatures", label: "Candidatures" },
     { href: "/admin/escapades", label: "Escapades" },
     { href: "/admin/reservations", label: "Réservations" },
+    { href: "/admin/finances", label: "Finances" },
   ];
 
   return (

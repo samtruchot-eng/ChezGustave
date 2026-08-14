@@ -492,6 +492,38 @@ export async function seedDatabase(prisma: PrismaClient) {
     ],
   });
 
+  // ---------------- Historique de réservations (finances) ----------------
+  // Réservations terminées réparties sur ~6 mois, paniers variés — pour peupler
+  // le suivi financier de l'admin avec des chiffres réalistes.
+  console.log("💰 Historique de réservations…");
+  const paniers = [
+    120, 150, 200, 90, 300, 240, 180, 540, 160, 420, 110, 260, 200, 130, 350,
+    480, 140, 220, 300, 170, 250, 190, 400, 210,
+  ];
+  const historyBookings = [];
+  for (let i = 0; i < paniers.length; i++) {
+    const listing = listings[i % listings.length];
+    const sitter = sitters[(i + 1) % sitters.length];
+    const amount = paniers[i];
+    const commAmount = Math.round((amount * 18) / 100);
+    // réparti sur ~180 jours (≈ 6 mois), quelques-unes récentes
+    const daysAgo = Math.floor((i * 172) / paniers.length) + (i % 3);
+    const duration = 3 + (i % 8);
+    historyBookings.push({
+      listingId: listing.id,
+      ownerId: listing.ownerId,
+      sitterId: sitter.id,
+      startDate: daysFromNow(-daysAgo - duration),
+      endDate: daysFromNow(-daysAgo),
+      amount,
+      commissionPercent: 18,
+      commissionAmount: commAmount,
+      payoutAmount: amount - commAmount,
+      status: "completed",
+    });
+  }
+  await prisma.booking.createMany({ data: historyBookings });
+
   // ---------------- Conversation de démo ----------------
   console.log("💬 Messages…");
   const convo = await prisma.conversation.create({
