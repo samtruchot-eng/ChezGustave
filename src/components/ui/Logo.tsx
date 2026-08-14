@@ -206,22 +206,32 @@ export function Logo({
   accentColor?: string;
 }) {
   if (!showWordmark) return <GustaveMark className={className} />;
+  const emblem = Math.round(size * 1.35);
   return (
-    <span className={cn("inline-flex flex-col leading-none", className)}>
-      <LeashWordmark
-        size={size}
-        chezColor={chezColor}
-        scriptColor={scriptColor}
-        accentColor={accentColor}
-      />
-      {showTagline && (
-        <span
-          className="mt-1 pl-0.5 tracking-wide text-muted"
-          style={{ fontSize: Math.max(9, size * 0.32) }}
-        >
-          Gardez un chien, partez au vert
-        </span>
-      )}
+    <span className={cn("inline-flex items-center gap-2", className)}>
+      <span
+        className="shrink-0"
+        style={{ width: emblem, height: emblem }}
+        aria-hidden
+      >
+        <GustaveMark className="h-full w-full" />
+      </span>
+      <span className="inline-flex flex-col leading-none">
+        <LeashWordmark
+          size={size}
+          chezColor={chezColor}
+          scriptColor={scriptColor}
+          accentColor={accentColor}
+        />
+        {showTagline && (
+          <span
+            className="mt-1 pl-0.5 tracking-wide text-muted"
+            style={{ fontSize: Math.max(10, size * 0.34) }}
+          >
+            Le bonheur des chiens, la sérénité des maîtres
+          </span>
+        )}
+      </span>
     </span>
   );
 }
