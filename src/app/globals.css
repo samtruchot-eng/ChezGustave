@@ -66,6 +66,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Page de présentation : identité 100 % moderne (Sora pour titres et texte) */
+.page-modern {
+  font-family: var(--font-modern);
+}
+.page-modern :is(h1, h2, h3, .font-serif) {
+  font-family: var(--font-modern);
+  letter-spacing: -0.025em;
+}
+
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
