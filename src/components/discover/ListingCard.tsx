@@ -56,7 +56,7 @@ export function ListingCard({ listing }: { listing: ListingCardData }) {
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="font-semibold leading-snug text-ink group-hover:text-forest">
+            <h3 className="font-semibold leading-snug text-ink group-hover:text-brand">
               {listing.title}
             </h3>
             <p className="mt-0.5 text-sm text-muted">
@@ -70,7 +70,7 @@ export function ListingCard({ listing }: { listing: ListingCardData }) {
             {formatDateRange(listing.startDate, listing.endDate)}
           </span>
           <span className="text-right">
-            <span className="font-semibold text-forest">
+            <span className="font-semibold text-brand">
               {formatCHF(listing.price)}
             </span>
             <span className="block text-xs text-muted">

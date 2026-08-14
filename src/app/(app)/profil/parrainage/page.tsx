@@ -13,13 +13,13 @@ export default async function ParrainagePage() {
     <div className="space-y-4">
       <Link
         href="/profil"
-        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-forest"
+        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-brand"
       >
         ← Profil
       </Link>
       <h1 className="text-2xl font-bold text-ink">Parrainage</h1>
 
-      <section className="card bg-forest p-6 text-center text-cream">
+      <section className="card bg-brand p-6 text-center text-cream">
         <span className="text-4xl">🎁</span>
         <p className="mt-2 text-lg font-semibold">
           {formatCHF(REFERRAL_BONUS_CHF)} offerts à chacun

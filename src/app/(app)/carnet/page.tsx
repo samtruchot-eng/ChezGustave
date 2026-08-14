@@ -74,7 +74,7 @@ export default async function CarnetPage() {
             </p>
           </div>
           <div className="absolute right-3 top-3">
-            <Badge tone="forest">
+            <Badge tone="brand">
               {booking.status === "in_progress" ? "En cours" : "Garde"}
             </Badge>
           </div>
@@ -126,7 +126,7 @@ export default async function CarnetPage() {
       {/* Album souvenir */}
       <section className="card bg-sage-100 p-5 text-center">
         <span className="text-3xl">📸</span>
-        <h2 className="mt-1 font-semibold text-forest">Album souvenir</h2>
+        <h2 className="mt-1 font-semibold text-brand">Album souvenir</h2>
         <p className="text-sm text-ink-soft">
           À la fin du séjour, toutes les photos et les mots seront réunis dans
           un album, remis au propriétaire.

@@ -87,7 +87,7 @@ export default async function EscapadePage({
           <span className="chip">
             🏠 {CARE_TYPE_LABELS[listing.careType as CareType]}
           </span>
-          <span className="chip font-semibold text-forest">
+          <span className="chip font-semibold text-brand">
             {formatCHF(listing.price)}
           </span>
         </div>
@@ -185,7 +185,7 @@ export default async function EscapadePage({
       <div className="fixed inset-x-0 bottom-16 z-30 border-t border-line bg-paper/95 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
           <div>
-            <p className="font-semibold text-forest">
+            <p className="font-semibold text-brand">
               {formatCHF(listing.price)}
             </p>
             <p className="text-xs text-muted">
@@ -207,7 +207,7 @@ function BackLink() {
   return (
     <Link
       href="/decouvrir"
-      className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-forest"
+      className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-brand"
     >
       ← Retour
     </Link>

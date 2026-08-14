@@ -21,7 +21,7 @@ export default async function FavorisPage() {
     <div className="space-y-4">
       <Link
         href="/profil"
-        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-forest"
+        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-brand"
       >
         ← Profil
       </Link>

@@ -50,14 +50,14 @@ export function BottomNav() {
               href={tab.href}
               className={cn(
                 "flex flex-1 flex-col items-center gap-1 py-2.5 text-[0.68rem] font-medium transition-colors",
-                active ? "text-forest" : "text-muted hover:text-ink-soft"
+                active ? "text-brand" : "text-muted hover:text-ink-soft"
               )}
             >
               <span
                 className={cn(
                   "inline-flex h-9 w-9 items-center justify-center rounded-full",
-                  isPublish && "bg-forest text-cream",
-                  active && !isPublish && "bg-sage-100"
+                  isPublish && "bg-brand text-cream",
+                  active && !isPublish && "bg-brand/10"
                 )}
               >
                 <svg

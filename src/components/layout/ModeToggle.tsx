@@ -32,7 +32,7 @@ export function ModeToggle({
             className={cn(
               "rounded-full px-4 py-1.5 font-medium transition-colors",
               mode === m
-                ? "bg-forest text-cream"
+                ? "bg-brand text-cream"
                 : "text-ink-soft hover:bg-sand"
             )}
           >
@@ -55,7 +55,7 @@ export function ModeToggle({
       <span
         className={cn(
           "inline-block h-2 w-2 rounded-full",
-          mode === "owner" ? "bg-forest" : "bg-gold"
+          mode === "owner" ? "bg-brand" : "bg-gold"
         )}
       />
       {mode === "owner" ? "Propriétaire" : "Gardien"}

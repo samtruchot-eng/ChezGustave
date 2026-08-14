@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s · Chez Gustave",
   },
   description:
-    "La plateforme de garde de chien à domicile en Suisse romande. Votre chien reste chez lui ; un gardien passionné vient s'en occuper. Pour les gardiens, une escapade à la campagne — payée et logée.",
+    "La plateforme de garde de chien à domicile à Genève et dans sa région. Votre chien reste chez lui ; un gardien passionné vient s'en occuper. Pour les gardiens, une escapade au vert — payée et logée.",
   applicationName: "Chez Gustave",
   keywords: [
     "garde de chien",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2f5d3a",
+  themeColor: "#c0562a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

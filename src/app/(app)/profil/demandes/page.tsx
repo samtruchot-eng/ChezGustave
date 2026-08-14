@@ -112,7 +112,7 @@ async function OwnerApplications({ userId }: { userId: string }) {
           <div className="mt-3 flex justify-end">
             <Link
               href={`/messages/nouveau?to=${a.sitter.id}`}
-              className="text-sm font-medium text-forest hover:underline"
+              className="text-sm font-medium text-brand hover:underline"
             >
               Répondre →
             </Link>
@@ -136,7 +136,7 @@ function BackLink() {
   return (
     <Link
       href="/profil"
-      className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-forest"
+      className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-brand"
     >
       ← Profil
     </Link>

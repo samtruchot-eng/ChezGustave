@@ -71,7 +71,7 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
               onClick={() => update({ view: v === "list" ? null : v })}
               className={cn(
                 "rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
-                view === v ? "bg-forest text-cream" : "text-ink-soft"
+                view === v ? "bg-brand text-cream" : "text-ink-soft"
               )}
               aria-pressed={view === v}
             >
@@ -141,7 +141,7 @@ function FilterChip({
       className={cn(
         "chip transition-colors",
         active
-          ? "border-forest bg-forest text-cream"
+          ? "border-brand bg-brand text-cream"
           : "hover:border-sage hover:bg-sage-100"
       )}
     >

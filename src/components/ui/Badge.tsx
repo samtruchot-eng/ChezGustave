@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
-type Tone = "forest" | "sage" | "gold" | "neutral" | "terracotta";
+type Tone = "brand" | "sage" | "gold" | "neutral" | "terracotta";
 
 const tones: Record<Tone, string> = {
-  forest: "bg-forest text-cream",
-  sage: "bg-sage-100 text-forest",
+  brand: "bg-brand text-cream",
+  sage: "bg-sage-100 text-pine",
   gold: "bg-gold/20 text-gold-600",
   neutral: "bg-sand text-ink-soft",
   terracotta: "bg-terracotta/15 text-terracotta",

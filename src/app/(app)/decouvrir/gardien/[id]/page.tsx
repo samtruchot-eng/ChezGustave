@@ -32,7 +32,7 @@ export default async function GardienPage({
     <div className="space-y-5 pb-4">
       <Link
         href="/decouvrir"
-        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-forest"
+        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-brand"
       >
         ← Retour
       </Link>
@@ -56,7 +56,7 @@ export default async function GardienPage({
         {sitter.headline && (
           <p className="mt-3 text-ink-soft">{sitter.headline}</p>
         )}
-        <p className="mt-3 text-lg font-semibold text-forest">
+        <p className="mt-3 text-lg font-semibold text-brand">
           {formatCHF(sitter.dailyRate)}
           <span className="text-sm font-normal text-muted"> /jour</span>
         </p>

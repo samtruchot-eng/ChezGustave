@@ -34,7 +34,7 @@ export default async function ConversationPage({
       <div className="mb-3 flex items-center gap-3">
         <Link
           href="/messages"
-          className="text-ink-soft hover:text-forest"
+          className="text-ink-soft hover:text-brand"
           aria-label="Retour"
         >
           ←
@@ -58,7 +58,7 @@ export default async function ConversationPage({
                 className={cn(
                   "max-w-[80%] rounded-2xl px-4 py-2 text-sm",
                   mine
-                    ? "bg-forest text-cream"
+                    ? "bg-brand text-cream"
                     : "bg-paper text-ink border border-line"
                 )}
               >

@@ -1,36 +1,40 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Chez Gustave — design system « nature / campagne »
-   Palette : verts forêt & sauge, crème, accent doré, encre chaude.
+   Chez Gustave — design system
+   Marque : terracotta chaleureux + crème (identité du logo Gustave),
+   avec une touche de vert « sauge » comme clin d'œil « partez au vert ».
    ------------------------------------------------------------------ */
 
 @theme {
   /* Fond & surfaces */
-  --color-cream: #faf6ee;
-  --color-paper: #ffffff;
-  --color-sand: #f0e9db;
+  --color-cream: #f7f0e4;
+  --color-paper: #fffdf9;
+  --color-sand: #efe4d2;
 
-  /* Verts (marque) */
-  --color-forest: #2f5d3a;
-  --color-forest-600: #35694a;
-  --color-forest-700: #244a30;
+  /* Terracotta (couleur de marque) */
+  --color-brand: #c0562a;
+  --color-brand-600: #a94b23;
+  --color-brand-700: #8d3d1c;
+
+  /* Vert sauge (accent nature) */
   --color-sage: #7ca982;
   --color-sage-100: #e6efe6;
   --color-moss: #8a9a5b;
+  --color-pine: #35694a; /* vert foncé lisible (badges confiance) */
 
-  /* Accents chauds */
+  /* Autres accents */
   --color-gold: #d99a4e;
   --color-gold-600: #c9863a;
-  --color-terracotta: #c96f4a;
+  --color-terracotta: #b23f28; /* alertes / « dernière minute » (rouille) */
 
-  /* Encre & texte */
-  --color-ink: #24302a;
-  --color-ink-soft: #4c5a52;
-  --color-muted: #8b968d;
+  /* Encre & texte (bruns chauds) */
+  --color-ink: #2e2620;
+  --color-ink-soft: #6a5a4c;
+  --color-muted: #a1917f;
 
   /* Bordures */
-  --color-line: #e4ddce;
+  --color-line: #e7dccb;
 
   /* Rayons */
   --radius-xl: 1.25rem;

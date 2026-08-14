@@ -33,7 +33,7 @@ export function SitterCard({ sitter }: { sitter: SitterCardData }) {
       />
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="truncate font-semibold text-ink group-hover:text-forest">
+          <h3 className="truncate font-semibold text-ink group-hover:text-brand">
             {sitter.firstName}
           </h3>
           <Rating value={sitter.ratingAvg} count={sitter.ratingCount} />
@@ -51,7 +51,7 @@ export function SitterCard({ sitter }: { sitter: SitterCardData }) {
               {animals.map((a) => ANIMAL_EMOJI[a]).join(" ")}
             </span>
           </div>
-          <span className="text-sm font-semibold text-forest">
+          <span className="text-sm font-semibold text-brand">
             {formatCHF(sitter.dailyRate)}
             <span className="font-normal text-muted">/jour</span>
           </span>

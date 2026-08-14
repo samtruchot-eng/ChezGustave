@@ -90,8 +90,8 @@ export function MapView({ points }: { points: MapPoint[] }) {
                 className={cn(
                   "flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold shadow-md",
                   isActive
-                    ? "bg-forest text-cream"
-                    : "bg-paper text-forest"
+                    ? "bg-brand text-cream"
+                    : "bg-paper text-brand"
                 )}
               >
                 📍
@@ -119,7 +119,7 @@ export function MapView({ points }: { points: MapPoint[] }) {
             )}
           </div>
           {typeof activePoint.price === "number" && (
-            <span className="shrink-0 font-semibold text-forest">
+            <span className="shrink-0 font-semibold text-brand">
               {formatCHF(activePoint.price)}
             </span>
           )}

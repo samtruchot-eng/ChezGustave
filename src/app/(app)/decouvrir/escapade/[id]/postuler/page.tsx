@@ -26,7 +26,7 @@ export default async function PostulerPage({
     <div className="space-y-5">
       <Link
         href={`/decouvrir/escapade/${listing.id}`}
-        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-forest"
+        className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-brand"
       >
         ← Retour à l&apos;escapade
       </Link>
@@ -54,7 +54,7 @@ export default async function PostulerPage({
           </Row>
           <div className="mt-1 border-t border-line pt-2">
             <Row label="Vous recevez">
-              <span className="font-semibold text-forest">
+              <span className="font-semibold text-brand">
                 {formatCHF(breakdown.payoutAmount)}
               </span>
             </Row>

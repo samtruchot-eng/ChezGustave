@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
+import { Logo, GustaveMark } from "@/components/ui/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { EnterAppButton } from "@/components/home/EnterAppButton";
 
@@ -11,7 +11,7 @@ export default function HomePage() {
         <Logo />
         <Link
           href="/decouvrir"
-          className="text-sm font-medium text-forest hover:underline"
+          className="text-sm font-medium text-brand hover:underline"
         >
           Se connecter
         </Link>
@@ -21,13 +21,13 @@ export default function HomePage() {
       <section className="mx-auto max-w-5xl px-5 pt-6 pb-12 md:pt-14">
         <div className="grid items-center gap-10 md:grid-cols-2">
           <div className="animate-fade-in-up">
-            <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-sage-100 px-3 py-1 text-sm font-medium text-forest">
-              🌿 Suisse romande · lancement cet été
+            <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand">
+              🌿 Genève et sa région · lancement cet été
             </p>
             <h1 className="text-4xl font-bold leading-tight tracking-tight text-ink md:text-5xl">
               Gardez un chien,
               <br />
-              <span className="text-forest">partez au vert.</span>
+              <span className="text-brand">partez au vert.</span>
             </h1>
             <p className="mt-5 max-w-md text-lg text-ink-soft">
               La garde de chien à domicile qui change tout : votre compagnon
@@ -46,7 +46,7 @@ export default function HomePage() {
 
             <p className="mt-4 text-sm text-muted">
               Déjà inscrit ?{" "}
-              <Link href="/decouvrir" className="text-forest hover:underline">
+              <Link href="/decouvrir" className="text-brand hover:underline">
                 Entrer dans l&apos;application
               </Link>
             </p>
@@ -55,12 +55,10 @@ export default function HomePage() {
           {/* Carte-histoire de Gustave */}
           <div className="card animate-fade-in-up p-6 md:p-8">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-sage-100 text-4xl">
-                🐾
-              </div>
+              <GustaveMark className="h-16 w-16" />
               <div>
                 <p className="text-sm text-muted">Voici</p>
-                <p className="text-xl font-semibold text-forest">Gustave</p>
+                <p className="text-xl font-semibold text-brand">Gustave</p>
               </div>
             </div>
             <p className="mt-5 text-ink-soft">
@@ -113,7 +111,7 @@ export default function HomePage() {
             },
           ].map((s) => (
             <div key={s.n} className="card p-6">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-forest text-cream font-semibold">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-cream font-semibold">
                 {s.n}
               </div>
               <h3 className="mt-4 font-semibold text-ink">{s.title}</h3>
@@ -125,7 +123,7 @@ export default function HomePage() {
 
       {/* Bandeau gardien */}
       <section className="mx-auto max-w-5xl px-5 pb-16">
-        <div className="card overflow-hidden bg-forest p-8 text-cream md:p-10">
+        <div className="card overflow-hidden bg-brand p-8 text-cream md:p-10">
           <div className="max-w-xl">
             <h2 className="text-2xl font-bold md:text-3xl">
               Et si vos prochaines vacances, c&apos;était à la campagne —
@@ -147,8 +145,8 @@ export default function HomePage() {
 
       <footer className="border-t border-line py-8 text-center text-sm text-muted">
         <p>
-          Chez Gustave · Plateforme de garde de chien à domicile · Suisse
-          romande
+          Chez Gustave · Plateforme de garde de chien à domicile · Genève et sa
+          région
         </p>
         <p className="mt-1">
           Prototype — les paiements et l&apos;assurance sont en cours de mise en

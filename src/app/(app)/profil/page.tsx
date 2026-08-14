@@ -129,7 +129,7 @@ export default async function ProfilPage() {
 function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="card p-4 text-center">
-      <p className="text-2xl font-bold text-forest">{value}</p>
+      <p className="text-2xl font-bold text-brand">{value}</p>
       <p className="text-xs text-muted">{label}</p>
     </div>
   );
@@ -139,7 +139,7 @@ function Check({ ok, label }: { ok?: boolean; label: string }) {
   return (
     <div className="flex items-center gap-2">
       <span
-        className={ok ? "text-forest" : "text-muted"}
+        className={ok ? "text-brand" : "text-muted"}
         aria-hidden="true"
       >
         {ok ? "✓" : "○"}

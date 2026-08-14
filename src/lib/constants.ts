@@ -87,18 +87,30 @@ export const BOOKING_STATUS_LABELS: Record<BookingStatus, string> = {
   cancelled: "Annulée",
 };
 
-/** Régions cibles du lancement (campagne genevoise). */
+/** Communes couvertes — Genève et sa région (au sens large). */
 export const LAUNCH_REGIONS = [
+  "Genève",
+  "Carouge",
+  "Lancy",
+  "Vernier",
+  "Meyrin",
+  "Onex",
+  "Chêne-Bougeries",
+  "Thônex",
+  "Grand-Saconnex",
+  "Versoix",
+  "Plan-les-Ouates",
+  "Veyrier",
+  "Cologny",
+  "Bernex",
   "Hermance",
   "Anières",
   "Corsier",
+  "Céligny",
   "Satigny",
   "Dardagny",
   "Russin",
-  "Bernex",
-  "Genève",
   "Nyon",
-  "Céligny",
 ] as const;
 
 /** Commission plateforme (%). Lue depuis l'env, défaut 18 %. */

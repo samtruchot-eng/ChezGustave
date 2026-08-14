@@ -28,7 +28,7 @@ export function Avatar({
   return (
     <span
       className={cn(
-        "inline-flex items-center justify-center rounded-full bg-sage-100 font-semibold text-forest",
+        "inline-flex items-center justify-center rounded-full bg-brand/10 font-semibold text-brand",
         className
       )}
       style={{ width: size, height: size, fontSize: size * 0.4 }}
