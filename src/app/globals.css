@@ -23,6 +23,10 @@
   --color-moss: #8a9a5b;
   --color-pine: #35694a; /* vert foncé lisible (badges confiance) */
 
+  /* Bleu lac (accent) */
+  --color-lake: #6c94aa;
+  --color-lake-100: #e2ecf1;
+
   /* Autres accents */
   --color-gold: #d99a4e;
   --color-gold-600: #c9863a;
@@ -43,6 +47,16 @@
   /* Typo */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Fraunces Variable", Georgia, "Times New Roman", serif;
+}
+
+/* Titres en serif (identité chaleureuse & artisanale) */
+h1,
+h2,
+h3,
+.font-serif {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
 }
 
 html {
