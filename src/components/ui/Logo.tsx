@@ -62,9 +62,11 @@ export const PawMark = GustaveMark;
 export function Logo({
   className,
   showWordmark = true,
+  showTagline = true,
 }: {
   className?: string;
   showWordmark?: boolean;
+  showTagline?: boolean;
 }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
@@ -74,9 +76,11 @@ export function Logo({
           <span className="font-serif text-[1.2rem] font-semibold tracking-tight text-brand">
             Chez Gustave
           </span>
-          <span className="mt-0.5 text-[0.62rem] tracking-wide text-muted">
-            Gardez un chien, partez au vert
-          </span>
+          {showTagline && (
+            <span className="mt-0.5 text-[0.62rem] tracking-wide text-muted">
+              Gardez un chien, partez au vert
+            </span>
+          )}
         </span>
       )}
     </span>
