@@ -15,8 +15,18 @@ import {
   IconPin,
   IconBook,
   IconChat,
+  IconCheck,
+  IconShield,
+  IconClock,
 } from "@/components/ui/icons";
-import { startBooking, completeBooking, cancelBooking } from "./actions";
+import { isStripeConfigured, retrieveCheckoutSession } from "@/lib/stripe";
+import { markBookingPaid } from "@/lib/payments";
+import {
+  startBooking,
+  completeBooking,
+  cancelBooking,
+  payForBooking,
+} from "./actions";
 
 const STEPS: { key: BookingStatus; label: string }[] = [
   { key: "confirmed", label: "Confirmée" },
@@ -26,13 +36,16 @@ const STEPS: { key: BookingStatus; label: string }[] = [
 
 export default async function ReservationDetail({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ session_id?: string; canceled?: string; error?: string }>;
 }) {
   const { id } = await params;
+  const sp = await searchParams;
   const me = await requireUser();
 
-  const booking = await prisma.booking.findUnique({
+  let booking = await prisma.booking.findUnique({
     where: { id },
     include: {
       listing: { include: { dog: true } },
@@ -42,6 +55,44 @@ export default async function ReservationDetail({
   });
   if (!booking || (booking.ownerId !== me.id && booking.sitterId !== me.id))
     notFound();
+
+  // Réconciliation au retour de Stripe Checkout (au cas où le webhook tarde).
+  if (sp.session_id && booking.paymentStatus === "unpaid") {
+    try {
+      const session = await retrieveCheckoutSession(sp.session_id);
+      if (session?.payment_status === "paid") {
+        await markBookingPaid({
+          bookingId: booking.id,
+          paymentIntentId:
+            typeof session.payment_intent === "string"
+              ? session.payment_intent
+              : null,
+        });
+        booking = await prisma.booking.findUnique({
+          where: { id },
+          include: {
+            listing: { include: { dog: true } },
+            owner: { select: { id: true, name: true, image: true } },
+            sitter: { select: { id: true, name: true, image: true } },
+          },
+        });
+        if (!booking) notFound();
+      }
+    } catch {
+      // On ignore : le webhook confirmera le paiement.
+    }
+  }
+
+  if (!booking) notFound();
+
+  // Statut de paiement du gardien (pour proposer le règlement en ligne).
+  const sitterProfile = await prisma.sitterProfile.findUnique({
+    where: { userId: booking.sitterId },
+    select: { stripeChargesEnabled: true },
+  });
+  const sitterPayReady = !!sitterProfile?.stripeChargesEnabled;
+  const paid = booking.paymentStatus === "paid";
+  const canPayOnline = isStripeConfigured();
 
   const iAmOwner = booking.ownerId === me.id;
   const other = iAmOwner ? booking.sitter : booking.owner;
@@ -125,7 +176,18 @@ export default async function ReservationDetail({
 
       {/* Paiement */}
       <section className="card p-5">
-        <h2 className="font-semibold text-ink">Paiement</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-ink">Paiement</h2>
+          {paid ? (
+            <Badge tone="sage">
+              <IconCheck className="h-3.5 w-3.5" /> Payé
+            </Badge>
+          ) : (
+            <Badge tone="neutral">
+              <IconClock className="h-3.5 w-3.5" /> À régler
+            </Badge>
+          )}
+        </div>
         <div className="mt-3 space-y-1 text-sm">
           <Row label="Montant total">{formatCHF(booking.amount)}</Row>
           <Row label={`Commission Chez Gustave (${booking.commissionPercent}%)`}>
@@ -141,10 +203,55 @@ export default async function ReservationDetail({
             </Row>
           </div>
         </div>
-        <p className="mt-3 rounded-xl bg-sand/60 px-3 py-2 text-xs text-ink-soft">
-          Le paiement en ligne sécurisé (Stripe) arrive bientôt. Pour
-          l&apos;instant, réglez la garde de la main à la main.
-        </p>
+
+        {/* État & actions de paiement */}
+        {paid ? (
+          <p className="mt-3 flex items-center gap-2 rounded-xl bg-sage-100/70 px-3 py-2 text-xs text-pine">
+            <IconCheck className="h-4 w-4 shrink-0" />
+            {iAmOwner
+              ? "Garde réglée. Merci !"
+              : "Paiement reçu — votre versement est en route."}
+          </p>
+        ) : !canPayOnline ? (
+          <p className="mt-3 rounded-xl bg-sand/60 px-3 py-2 text-xs text-ink-soft">
+            Le paiement en ligne sécurisé (Stripe) arrive bientôt. Pour
+            l&apos;instant, réglez la garde de la main à la main.
+          </p>
+        ) : iAmOwner ? (
+          cancelled || status === "completed" ? null : sitterPayReady ? (
+            <div className="mt-4">
+              {sp.canceled && (
+                <p className="mb-2 text-xs text-terracotta">
+                  Paiement annulé. Vous pouvez réessayer quand vous voulez.
+                </p>
+              )}
+              <form action={payForBooking.bind(null, booking.id)}>
+                <Button type="submit" className="w-full">
+                  <IconShield className="h-4 w-4" /> Payer {formatCHF(booking.amount)}
+                </Button>
+              </form>
+              <p className="mt-2 text-center text-xs text-muted">
+                Paiement sécurisé par Stripe.
+              </p>
+            </div>
+          ) : (
+            <p className="mt-3 rounded-xl bg-sand/60 px-3 py-2 text-xs text-ink-soft">
+              Votre gardien doit d&apos;abord configurer ses paiements. Vous
+              pourrez régler en ligne dès que ce sera fait.
+            </p>
+          )
+        ) : sitterPayReady ? (
+          <p className="mt-3 rounded-xl bg-sand/60 px-3 py-2 text-xs text-ink-soft">
+            En attente du règlement par le propriétaire.
+          </p>
+        ) : (
+          <div className="mt-3 rounded-xl bg-sand/60 px-3 py-2 text-xs text-ink-soft">
+            Configurez vos paiements pour recevoir vos gains en ligne.{" "}
+            <Link href="/profil/paiements" className="font-medium text-brand hover:underline">
+              Configurer →
+            </Link>
+          </div>
+        )}
       </section>
 
       <InsuranceBadge />

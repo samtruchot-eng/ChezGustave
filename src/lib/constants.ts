@@ -87,6 +87,14 @@ export const BOOKING_STATUS_LABELS: Record<BookingStatus, string> = {
   cancelled: "Annulée",
 };
 
+/** Statut de paiement en ligne d'une réservation. */
+export type PaymentStatus = "unpaid" | "paid" | "refunded";
+export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
+  unpaid: "À régler",
+  paid: "Payé",
+  refunded: "Remboursé",
+};
+
 /** Communes couvertes — Genève et sa région (au sens large). */
 export const LAUNCH_REGIONS = [
   "Genève",

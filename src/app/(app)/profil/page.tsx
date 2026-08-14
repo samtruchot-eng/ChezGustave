@@ -20,6 +20,7 @@ import {
   IconLogout,
   IconPaw,
   IconCalendar,
+  IconShield,
 } from "@/components/ui/icons";
 import { logout } from "./actions";
 
@@ -71,6 +72,12 @@ export default async function ProfilPage() {
       hint: `${favoritesCount}`,
     },
     { icon: IconBook, label: "Carnet de garde", href: "/carnet" },
+    {
+      icon: IconShield,
+      label: "Mes paiements",
+      href: "/profil/paiements",
+      hint: "Gardien",
+    },
     {
       icon: IconGift,
       label: "Parrainage",

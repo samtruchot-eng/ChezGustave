@@ -1,8 +1,15 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
+import {
+  appBaseUrl,
+  createBookingCheckoutSession,
+  isStripeConfigured,
+} from "@/lib/stripe";
+import { formatDateRange } from "@/lib/utils";
 
 async function loadOwnBooking(bookingId: string) {
   const me = await requireUser();
@@ -12,6 +19,53 @@ async function loadOwnBooking(bookingId: string) {
   if (!booking) return null;
   if (booking.ownerId !== me.id && booking.sitterId !== me.id) return null;
   return { me, booking };
+}
+
+/**
+ * Le propriétaire règle la garde en ligne : crée une session Stripe Checkout
+ * (charge à destination du gardien, commission prélevée) et redirige.
+ */
+export async function payForBooking(bookingId: string) {
+  const me = await requireUser();
+  if (!isStripeConfigured()) redirect(`/profil/reservations/${bookingId}`);
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: { listing: { include: { dog: true } } },
+  });
+  if (!booking || booking.ownerId !== me.id)
+    redirect(`/profil/reservations/${bookingId}`);
+  if (booking.paymentStatus === "paid")
+    redirect(`/profil/reservations/${bookingId}`);
+  if (!["confirmed", "in_progress"].includes(booking.status))
+    redirect(`/profil/reservations/${bookingId}`);
+
+  const sitterProfile = await prisma.sitterProfile.findUnique({
+    where: { userId: booking.sitterId },
+  });
+  if (!sitterProfile?.stripeAccountId || !sitterProfile.stripeChargesEnabled)
+    redirect(`/profil/reservations/${bookingId}?error=sitter_not_ready`);
+
+  const base = `${appBaseUrl()}/profil/reservations/${bookingId}`;
+  const session = await createBookingCheckoutSession({
+    bookingId: booking.id,
+    amountChf: booking.amount,
+    commissionChf: booking.commissionAmount,
+    sitterAccountId: sitterProfile.stripeAccountId,
+    productName: `Garde de ${booking.listing.dog.name}`,
+    productDescription: formatDateRange(booking.startDate, booking.endDate),
+    ownerEmail: me.email,
+    successUrl: `${base}?session_id={CHECKOUT_SESSION_ID}`,
+    cancelUrl: `${base}?canceled=1`,
+  });
+  if (!session?.url) redirect(`/profil/reservations/${bookingId}`);
+
+  await prisma.booking.update({
+    where: { id: booking.id },
+    data: { stripeCheckoutSessionId: session.id },
+  });
+
+  redirect(session.url);
 }
 
 /** Passe la garde « en cours ». */

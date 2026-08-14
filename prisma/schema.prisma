@@ -140,7 +140,8 @@ model SitterProfile {
   ratingCount   Int     @default(0)
 
   // Paiements sortants (Stripe Connect) — le gardien reçoit ses paiements ici
-  stripeAccountId String?
+  stripeAccountId      String?
+  stripeChargesEnabled Boolean @default(false) // onboarding Stripe terminé ?
 
   availabilities Availability[]
 
@@ -273,8 +274,12 @@ model Booking {
 
   status String @default("pending") // "pending" | "confirmed" | "in_progress" | "completed" | "cancelled"
 
-  stripePaymentIntentId String?
-  stripeTransferId      String?
+  // Paiement en ligne (Stripe)
+  paymentStatus           String    @default("unpaid") // "unpaid" | "paid" | "refunded"
+  paidAt                  DateTime?
+  stripeCheckoutSessionId String?
+  stripePaymentIntentId   String?
+  stripeTransferId        String?
 
   careLog CareLogEntry[]
   reviews Review[]

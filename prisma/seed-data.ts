@@ -472,6 +472,8 @@ export async function seedDatabase(prisma: PrismaClient) {
       commissionAmount,
       payoutAmount: amount - commissionAmount,
       status: "in_progress",
+      paymentStatus: "paid",
+      paidAt: daysFromNow(-3),
     },
   });
 
@@ -520,6 +522,8 @@ export async function seedDatabase(prisma: PrismaClient) {
       commissionAmount: commAmount,
       payoutAmount: amount - commAmount,
       status: "completed",
+      paymentStatus: "paid",
+      paidAt: daysFromNow(-daysAgo),
     });
   }
   await prisma.booking.createMany({ data: historyBookings });
