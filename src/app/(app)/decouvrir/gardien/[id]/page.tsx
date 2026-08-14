@@ -158,20 +158,21 @@ export default async function GardienPage({
         </section>
       )}
 
-      {/* Barre d'action Contact */}
-      <div className="fixed inset-x-0 bottom-16 z-30 border-t border-line bg-paper/95 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center justify-end gap-2 px-4 py-3">
-          <ButtonLink
-            href={`/messages/nouveau?to=${sitter.user.id}`}
-            variant="secondary"
-          >
-            <IconVideo className="h-4 w-4" /> Appel vidéo
-          </ButtonLink>
-          <ButtonLink href={`/messages/nouveau?to=${sitter.user.id}`}>
-            Contacter {sitter.firstName}
-          </ButtonLink>
-        </div>
-      </div>
+      {/* Actions Contact */}
+      <section className="card flex flex-wrap items-center justify-end gap-2 p-4">
+        <ButtonLink
+          href={`/messages/nouveau?to=${sitter.user.id}`}
+          variant="secondary"
+        >
+          <IconVideo className="h-4 w-4" /> Appel vidéo
+        </ButtonLink>
+        <ButtonLink
+          href={`/messages/nouveau?to=${sitter.user.id}`}
+          className="flex-1 justify-center sm:flex-none"
+        >
+          Contacter {sitter.firstName}
+        </ButtonLink>
+      </section>
     </div>
   );
 }

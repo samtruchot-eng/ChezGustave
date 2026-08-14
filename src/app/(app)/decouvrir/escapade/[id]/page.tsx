@@ -204,24 +204,25 @@ export default async function EscapadePage({
         </div>
       </section>
 
-      {/* Barre d'action Postuler */}
-      <div className="fixed inset-x-0 bottom-16 z-30 border-t border-line bg-paper/95 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
-          <div>
-            <p className="font-semibold text-brand">
-              {formatCHF(listing.price)}
-            </p>
-            <p className="text-xs text-muted">
-              {nights} nuit{nights > 1 ? "s" : ""} ·{" "}
-              {listing._count.applications} candidature
-              {listing._count.applications > 1 ? "s" : ""}
-            </p>
-          </div>
-          <ButtonLink href={`/decouvrir/escapade/${listing.id}/postuler`}>
-            Postuler à cette escapade
-          </ButtonLink>
+      {/* Action Postuler */}
+      <section className="card flex flex-wrap items-center justify-between gap-3 p-4">
+        <div>
+          <p className="font-semibold text-brand">
+            {formatCHF(listing.price)}
+          </p>
+          <p className="text-xs text-muted">
+            {nights} nuit{nights > 1 ? "s" : ""} ·{" "}
+            {listing._count.applications} candidature
+            {listing._count.applications > 1 ? "s" : ""}
+          </p>
         </div>
-      </div>
+        <ButtonLink
+          href={`/decouvrir/escapade/${listing.id}/postuler`}
+          className="flex-1 justify-center sm:flex-none"
+        >
+          Postuler à cette escapade
+        </ButtonLink>
+      </section>
     </div>
   );
 }
