@@ -1,0 +1,405 @@
+// ------------------------------------------------------------------
+// Chez Gustave — schéma de base de données
+// Plateforme de garde de chien à domicile · Suisse romande
+//
+// Dev  : SQLite  (provider = "sqlite",  DATABASE_URL="file:./dev.db")
+// Prod : PostgreSQL — voir NOTES-MIGRATION dans le README.
+//
+// Choix de portabilité SQLite -> Postgres :
+//  - pas d'enum natif : on utilise des String + constantes applicatives
+//    (voir src/lib/constants.ts)
+//  - pas de tableau scalaire : les listes sont stockées en JSON (String)
+//    et lues via des helpers.
+// ------------------------------------------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------------------
+// Authentification (compatible Auth.js / NextAuth Prisma Adapter)
+// ------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  passwordHash  String? // null si connexion via provider OAuth
+  name          String?
+  image         String?
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Un même utilisateur peut être à la fois propriétaire et gardien.
+  ownerProfile  OwnerProfile?
+  sitterProfile SitterProfile?
+
+  accounts Account[]
+  sessions Session[]
+
+  dogs      Dog[]
+  listings  Listing[] // escapades publiées en tant que propriétaire
+  bookingsAsOwner  Booking[] @relation("BookingOwner")
+  bookingsAsSitter Booking[] @relation("BookingSitter")
+
+  applications Application[] // candidatures envoyées en tant que gardien
+
+  sentMessages     Message[] @relation("MessageSender")
+  conversationsA   Conversation[] @relation("ConversationUserA")
+  conversationsB   Conversation[] @relation("ConversationUserB")
+
+  reviewsWritten  Review[] @relation("ReviewAuthor")
+  reviewsReceived Review[] @relation("ReviewTarget")
+
+  favorites     Favorite[]
+  notifications Notification[]
+
+  referralCode      String?  @unique
+  referredByCode    String?
+
+  @@index([referredByCode])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ------------------------------------------------------------------
+// Profils métier
+// ------------------------------------------------------------------
+
+model OwnerProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bio       String?
+  address   String?
+  region    String? // ex. "Hermance", "Champagne genevoise"
+  verified  Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SitterProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  firstName String
+  region    String // zone d'action principale
+  bio       String?
+  headline  String? // accroche courte
+  dailyRate Int      @default(0) // tarif indicatif / jour, en CHF
+
+  // Listes stockées en JSON (portabilité SQLite) — voir helpers jsonList()
+  animalsAccepted  String @default("[\"chiens\"]") // ["chiens","chats","chevaux"]
+  ambiances        String @default("[]")             // ["lac","campagne","montagne"]
+
+  verified      Boolean @default(false)
+  isSuperSitter Boolean @default(false)
+  ratingAvg     Float   @default(0)
+  ratingCount   Int     @default(0)
+
+  // Paiements sortants (Stripe Connect) — le gardien reçoit ses paiements ici
+  stripeAccountId String?
+
+  availabilities Availability[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Availability {
+  id        String   @id @default(cuid())
+  sitterId  String
+  sitter    SitterProfile @relation(fields: [sitterId], references: [id], onDelete: Cascade)
+  startDate DateTime
+  endDate   DateTime
+
+  @@index([sitterId])
+}
+
+// ------------------------------------------------------------------
+// Chiens — le « passeport » de l'animal
+// ------------------------------------------------------------------
+
+model Dog {
+  id        String   @id @default(cuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  name      String
+  breed     String?
+  ageYears  Int?
+  photo     String?
+
+  character String? // caractère
+  food      String? // alimentation
+  goodToKnow String? // à savoir
+  vet       String? // vétérinaire (coordonnées)
+  commands  String? // commandes connues
+
+  listings Listing[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+}
+
+// ------------------------------------------------------------------
+// Escapades (annonces de garde publiées par les propriétaires)
+// ------------------------------------------------------------------
+
+model Listing {
+  id        String   @id @default(cuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  dogId     String
+  dog       Dog      @relation(fields: [dogId], references: [id], onDelete: Cascade)
+
+  title     String
+  region    String
+  lat       Float?
+  lng       Float?
+  startDate DateTime
+  endDate   DateTime
+  careType  String   @default("onsite") // "onsite" (sur place) | "visits" (visites)
+  ambiance  String?  // "lac" | "campagne" | "montagne"
+  price     Int      @default(0) // rémunération totale proposée au gardien, en CHF
+  description String?
+
+  // "que faire autour" — activités à proximité, stockées en JSON
+  nearbyActivities String @default("[]")
+
+  lastMinute Boolean @default(false)
+  status     String  @default("open") // "open" | "matched" | "closed"
+
+  applications Application[]
+  bookings     Booking[]
+  reviews      Review[]
+  favorites    Favorite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@index([region])
+  @@index([status])
+}
+
+// ------------------------------------------------------------------
+// Candidatures (un gardien postule à une escapade)
+// ------------------------------------------------------------------
+
+model Application {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  sitterId  String
+  sitter    User     @relation(fields: [sitterId], references: [id], onDelete: Cascade)
+
+  message   String?
+  status    String   @default("pending") // "pending" | "accepted" | "rejected" | "withdrawn"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([listingId, sitterId])
+  @@index([sitterId])
+  @@index([status])
+}
+
+// ------------------------------------------------------------------
+// Réservations confirmées (+ paiement Stripe, commission plateforme)
+// ------------------------------------------------------------------
+
+model Booking {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  ownerId  String
+  owner    User   @relation("BookingOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  sitterId String
+  sitter   User   @relation("BookingSitter", fields: [sitterId], references: [id], onDelete: Cascade)
+
+  startDate DateTime
+  endDate   DateTime
+
+  amount            Int // montant total payé par le propriétaire (CHF)
+  commissionPercent Float @default(18)
+  commissionAmount  Int   @default(0) // part plateforme (CHF)
+  payoutAmount      Int   @default(0) // reversé au gardien (CHF)
+
+  status String @default("pending") // "pending" | "confirmed" | "in_progress" | "completed" | "cancelled"
+
+  stripePaymentIntentId String?
+  stripeTransferId      String?
+
+  careLog CareLogEntry[]
+  reviews Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@index([sitterId])
+  @@index([status])
+}
+
+// ------------------------------------------------------------------
+// Carnet de garde (nouvelles quotidiennes pendant le séjour)
+// ------------------------------------------------------------------
+
+model CareLogEntry {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  date  DateTime @default(now())
+  photo String?
+  note  String?
+  walkPath String? // GeoJSON / polyline du parcours de balade
+
+  createdAt DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+// ------------------------------------------------------------------
+// Messagerie
+// ------------------------------------------------------------------
+
+model Conversation {
+  id        String   @id @default(cuid())
+  userAId   String
+  userA     User     @relation("ConversationUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userBId   String
+  userB     User     @relation("ConversationUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  messages  Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userAId, userBId])
+  @@index([userAId])
+  @@index([userBId])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  body   String
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId])
+}
+
+// ------------------------------------------------------------------
+// Avis (sur les escapades et sur les gardiens)
+// ------------------------------------------------------------------
+
+model Review {
+  id        String   @id @default(cuid())
+  authorId  String
+  author    User     @relation("ReviewAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  targetId  String
+  target    User     @relation("ReviewTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  rating  Int // 1..5
+  comment String?
+
+  createdAt DateTime @default(now())
+
+  @@index([targetId])
+}
+
+// ------------------------------------------------------------------
+// Favoris
+// ------------------------------------------------------------------
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  sitterUserId String? // favori sur un profil gardien (User.id)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ------------------------------------------------------------------
+// Notifications
+// ------------------------------------------------------------------
+
+model Notification {
+  id      String   @id @default(cuid())
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type    String // "application_accepted" | "new_photo" | "new_sitter" | "reminder" | ...
+  title   String
+  body    String?
+  link    String?
+  readAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
