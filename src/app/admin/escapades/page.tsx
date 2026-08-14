@@ -54,7 +54,7 @@ export default async function AdminListingsPage() {
                   <div className="text-xs text-muted">
                     {l.dog.name}
                     {l.dog.breed ? ` · ${l.dog.breed}` : ""}
-                    {l.lastMinute ? " · ⏱️" : ""}
+                    {l.lastMinute ? " · dernière minute" : ""}
                   </div>
                 </td>
                 <td className="p-3 text-ink-soft">{l.owner.name}</td>

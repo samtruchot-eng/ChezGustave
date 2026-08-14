@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { formatCHF } from "@/lib/utils";
+import { IconPin } from "@/components/ui/icons";
 
 export interface MapPoint {
   id: string;
@@ -94,7 +95,7 @@ export function MapView({ points }: { points: MapPoint[] }) {
                     : "bg-paper text-brand"
                 )}
               >
-                📍
+                <IconPin className="h-3.5 w-3.5" />
                 {typeof p.price === "number" && (
                   <span>{formatCHF(p.price)}</span>
                 )}

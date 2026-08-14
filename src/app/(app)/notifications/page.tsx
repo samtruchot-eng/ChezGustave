@@ -3,15 +3,24 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import {
+  IconInbox,
+  IconCheck,
+  IconCamera,
+  IconLeaf,
+  IconBell,
+} from "@/components/ui/icons";
 
 export const metadata = { title: "Notifications" };
 
-const ICONS: Record<string, string> = {
-  new_application: "📨",
-  application_accepted: "✅",
-  new_photo: "📸",
-  new_sitter: "🧑‍🌾",
-  reminder: "🔔",
+type IconType = (props: { className?: string }) => React.ReactElement;
+
+const ICONS: Record<string, IconType> = {
+  new_application: IconInbox,
+  application_accepted: IconCheck,
+  new_photo: IconCamera,
+  new_sitter: IconLeaf,
+  reminder: IconBell,
 };
 
 export default async function NotificationsPage() {
@@ -28,7 +37,7 @@ export default async function NotificationsPage() {
 
       {notifications.length === 0 ? (
         <div className="card p-10 text-center">
-          <span className="text-4xl">🔔</span>
+          <IconBell className="mx-auto h-9 w-9 text-muted" />
           <p className="mt-2 font-medium text-ink">Rien de neuf</p>
           <p className="text-sm text-muted">
             Vous serez prévenu ici des demandes, photos et rappels.
@@ -42,7 +51,14 @@ export default async function NotificationsPage() {
                 href={n.link ?? "#"}
                 className="flex items-start gap-3 p-4 hover:bg-cream"
               >
-                <span className="text-xl">{ICONS[n.type] ?? "🔔"}</span>
+                {(() => {
+                  const NotifIcon = ICONS[n.type] ?? IconBell;
+                  return (
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                      <NotifIcon className="h-5 w-5" />
+                    </span>
+                  );
+                })()}
                 <div className="flex-1">
                   <p className="font-medium text-ink">{n.title}</p>
                   {n.body && (

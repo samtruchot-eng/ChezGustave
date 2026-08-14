@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import type { Ambiance, Animal } from "@/lib/constants";
 
 type IconProps = { className?: string };
 
@@ -128,3 +129,233 @@ export function IconVideo({ className }: IconProps) {
     </Line>
   );
 }
+
+export function IconSearch({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </Line>
+  );
+}
+
+export function IconPin({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M12 21s-6.5-5.3-6.5-10a6.5 6.5 0 0 1 13 0c0 4.7-6.5 10-6.5 10z" />
+      <circle cx="12" cy="11" r="2.3" />
+    </Line>
+  );
+}
+
+export function IconClock({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 1.8" />
+    </Line>
+  );
+}
+
+export function IconGift({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M4 11h16v9H4z" />
+      <path d="M12 11v9M3 7.5h18V11H3zM12 7.5S9 3.5 7 5.5 9 7.5 12 7.5zM12 7.5s3-4 5-2-2 2-5 2z" />
+    </Line>
+  );
+}
+
+export function IconHeart({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />
+    </Line>
+  );
+}
+
+export function IconBell({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5H3.5S6 15 6 9z" />
+      <path d="M10.2 20a2 2 0 0 0 3.6 0" />
+    </Line>
+  );
+}
+
+export function IconInbox({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M4 13l2.5-7h11L20 13v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
+      <path d="M4 13h4a2 2 0 0 0 4 0h4" transform="translate(0,0)" />
+    </Line>
+  );
+}
+
+export function IconChat({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.7 8.7 0 0 1-3.8-.9L3 20.5l1.5-4.2A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z" />
+    </Line>
+  );
+}
+
+export function IconCrown({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M4 8l3.5 3L12 5l4.5 6L20 8l-1.5 10h-13z" />
+    </Line>
+  );
+}
+
+export function IconWave({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M3 9c2.2-2 4.3-2 6.5 0S14 11 16 9s4.3-2 5 0" />
+      <path d="M3 15c2.2-2 4.3-2 6.5 0S14 17 16 15s4.3-2 5 0" />
+    </Line>
+  );
+}
+
+export function IconMountain({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M3 19l6-11 4 6.5 2-3 6 7.5z" />
+    </Line>
+  );
+}
+
+export function IconCat({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M5 9V4l3.5 3h7L19 4v5c0 4-3 8-7 8s-7-4-7-8z" />
+      <path d="M9.5 12h.01M14.5 12h.01M12 14l-1 1h2z" />
+    </Line>
+  );
+}
+
+export function IconHorse({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M6 20c0-5 2-8 5-9l1-4 3 2c3 1 4 4 4 7" />
+      <path d="M12 7c-3 0-5 2-6 4M8.5 9.5h.01" />
+    </Line>
+  );
+}
+
+export function IconLogout({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M15 4h3a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3" />
+      <path d="M10 12h9M16 8l4 4-4 4" />
+    </Line>
+  );
+}
+
+export function IconChevronRight({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M9 6l6 6-6 6" />
+    </Line>
+  );
+}
+
+// Passeport du chien
+export function IconHeartPulse({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 1-.3 2-.7 2.8" />
+      <path d="M8 12h2l1.5-2 2 4 1-2h3" />
+    </Line>
+  );
+}
+
+export function IconBowl({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M3 11h18a9 9 0 0 1-18 0z" />
+      <path d="M8 8c0-1.5 1-2.5 1-4M12 8c0-1.5 1-2.5 1-4M16 8c0-1.5 1-2.5 1-4" />
+    </Line>
+  );
+}
+
+export function IconBulb({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M9 18h6M10 21h4" />
+      <path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z" />
+    </Line>
+  );
+}
+
+export function IconUser({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+    </Line>
+  );
+}
+
+export function IconUsers({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3.5 19a5.5 5.5 0 0 1 11 0" />
+      <path d="M16 5.2a3.2 3.2 0 0 1 0 6M17.5 13.6A5.5 5.5 0 0 1 20.5 19" />
+    </Line>
+  );
+}
+
+export function IconCalendar({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <rect x="4" y="5" width="16" height="16" rx="2" />
+      <path d="M4 9h16M8 3v4M16 3v4" />
+    </Line>
+  );
+}
+
+export function IconGraduation({ className }: IconProps) {
+  return (
+    <Line className={className}>
+      <path d="M12 4l10 5-10 5L2 9z" />
+      <path d="M6 11v4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4" />
+    </Line>
+  );
+}
+
+const AMBIANCE_ICONS: Record<Ambiance, (p: IconProps) => React.ReactElement> = {
+  lac: IconWave,
+  campagne: IconLeaf,
+  montagne: IconMountain,
+};
+
+export function AmbianceIcon({
+  value,
+  className,
+}: {
+  value: Ambiance;
+  className?: string;
+}) {
+  const C = AMBIANCE_ICONS[value] ?? IconLeaf;
+  return <C className={className} />;
+}
+
+const ANIMAL_ICONS: Record<Animal, (p: IconProps) => React.ReactElement> = {
+  chiens: IconPaw,
+  chats: IconCat,
+  chevaux: IconHorse,
+};
+
+export function AnimalIcon({
+  value,
+  className,
+}: {
+  value: Animal;
+  className?: string;
+}) {
+  const C = ANIMAL_ICONS[value] ?? IconPaw;
+  return <C className={className} />;
+}
+

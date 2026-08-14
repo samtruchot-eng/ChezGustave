@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { REFERRAL_BONUS_CHF } from "@/lib/constants";
 import { formatCHF } from "@/lib/utils";
+import { IconGift, IconPaw } from "@/components/ui/icons";
 
 export const metadata = { title: "Parrainage" };
 
@@ -20,7 +21,7 @@ export default async function ParrainagePage() {
       <h1 className="text-2xl font-bold text-ink">Parrainage</h1>
 
       <section className="card bg-brand p-6 text-center text-cream">
-        <span className="text-4xl">🎁</span>
+        <IconGift className="mx-auto h-10 w-10" />
         <p className="mt-2 text-lg font-semibold">
           {formatCHF(REFERRAL_BONUS_CHF)} offerts à chacun
         </p>
@@ -33,9 +34,10 @@ export default async function ParrainagePage() {
         </div>
       </section>
 
-      <p className="text-center text-sm text-muted">
+      <p className="flex flex-wrap items-center justify-center gap-1.5 text-center text-sm text-muted">
         Le partage direct arrivera avec votre compte. En attendant, communiquez
-        ce code de vive voix. 🐾
+        ce code de vive voix.
+        <IconPaw className="h-4 w-4" />
       </p>
     </div>
   );

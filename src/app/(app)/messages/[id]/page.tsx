@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { Avatar } from "@/components/ui/Avatar";
 import { cn } from "@/lib/utils";
 import { MessageComposer } from "@/components/messages/MessageComposer";
+import { IconChat } from "@/components/ui/icons";
 import { sendMessage } from "./actions";
 
 export default async function ConversationPage({
@@ -42,7 +43,9 @@ export default async function ConversationPage({
         <Avatar src={other.image} name={other.name} size={40} />
         <div>
           <p className="font-semibold text-ink">{other.name}</p>
-          <p className="text-xs text-muted">💬 Discussion Chez Gustave</p>
+          <p className="flex items-center gap-1 text-xs text-muted">
+            <IconChat className="h-3.5 w-3.5" /> Discussion Chez Gustave
+          </p>
         </div>
       </div>
 

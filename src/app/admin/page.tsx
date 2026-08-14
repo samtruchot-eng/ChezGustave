@@ -2,11 +2,23 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import {
+  IconUsers,
+  IconHome,
+  IconLeaf,
+  IconPaw,
+  IconPin,
+  IconInbox,
+  IconCalendar,
+  IconChat,
+} from "@/components/ui/icons";
 import { formatCHF, formatDateRange } from "@/lib/utils";
 import {
   APPLICATION_STATUS_LABELS,
   type ApplicationStatus,
 } from "@/lib/constants";
+
+type IconType = (props: { className?: string }) => React.ReactElement;
 
 export default async function AdminDashboard() {
   const [
@@ -67,19 +79,24 @@ export default async function AdminDashboard() {
 
       {/* Statistiques */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        <Stat label="Utilisateurs" value={users} icon="👤" />
-        <Stat label="Propriétaires" value={owners} icon="🏡" />
-        <Stat label="Gardiens" value={sitters} icon="🧑‍🌾" />
-        <Stat label="Chiens" value={dogs} icon="🐶" />
-        <Stat label="Escapades" value={listings} sub={`${openListings} ouvertes`} icon="🗺️" />
+        <Stat label="Utilisateurs" value={users} icon={IconUsers} />
+        <Stat label="Propriétaires" value={owners} icon={IconHome} />
+        <Stat label="Gardiens" value={sitters} icon={IconLeaf} />
+        <Stat label="Chiens" value={dogs} icon={IconPaw} />
+        <Stat
+          label="Escapades"
+          value={listings}
+          sub={`${openListings} ouvertes`}
+          icon={IconPin}
+        />
         <Stat
           label="Candidatures"
           value={applications}
           sub={`${pendingApplications} en attente`}
-          icon="📨"
+          icon={IconInbox}
         />
-        <Stat label="Réservations" value={bookings} icon="📅" />
-        <Stat label="Messages" value={messages} icon="💬" />
+        <Stat label="Réservations" value={bookings} icon={IconCalendar} />
+        <Stat label="Messages" value={messages} icon={IconChat} />
       </div>
 
       {/* Volume financier */}
@@ -207,18 +224,18 @@ function Stat({
   label,
   value,
   sub,
-  icon,
+  icon: Icon,
 }: {
   label: string;
   value: number;
   sub?: string;
-  icon: string;
+  icon: IconType;
 }) {
   return (
     <div className="card p-4">
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted">{label}</span>
-        <span aria-hidden="true">{icon}</span>
+        <Icon className="h-5 w-5 text-brand" />
       </div>
       <p className="mt-1 text-2xl font-bold text-ink">{value}</p>
       {sub && <p className="text-xs text-muted">{sub}</p>}

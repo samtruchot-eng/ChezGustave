@@ -49,7 +49,7 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 pb-10 pt-6 md:pt-12">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          <Reveal>
+          <Reveal variant="left">
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3 py-1 text-sm font-medium text-brand shadow-sm">
               <IconLeaf className="h-4 w-4 text-sage" />
               Genève et sa région · lancement cet été
@@ -90,7 +90,7 @@ export default function HomePage() {
           </Reveal>
 
           {/* Visuel hero */}
-          <Reveal delay={120} className="relative">
+          <Reveal variant="right" delay={120} className="relative">
             <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand via-brand-600 to-brand-700 p-8 shadow-[0_30px_60px_-25px_rgba(141,61,28,0.6)]">
               <div
                 aria-hidden
@@ -153,7 +153,12 @@ export default function HomePage() {
             { Icon: IconBook, label: "Carnet de garde", sub: "Photos & nouvelles" },
             { Icon: IconCheck, label: "Vérifié", sub: "Profils de confiance" },
           ].map((t, i) => (
-            <Reveal key={t.label} delay={i * 90} className="text-center">
+            <Reveal
+              key={t.label}
+              variant="scale"
+              delay={i * 90}
+              className="text-center"
+            >
               <t.Icon className="mx-auto h-7 w-7 text-brand" />
               <p className="mt-2 font-semibold text-ink">{t.label}</p>
               <p className="text-xs text-muted">{t.sub}</p>
@@ -172,7 +177,7 @@ export default function HomePage() {
         </Reveal>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <Reveal className="h-full">
+          <Reveal variant="left" className="h-full">
             <div className="flex h-full flex-col rounded-3xl border border-line bg-gradient-to-br from-paper to-sand/40 p-7">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand">
                 <IconPaw className="h-6 w-6" />
@@ -196,7 +201,7 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <Reveal delay={120} className="h-full">
+          <Reveal variant="right" delay={120} className="h-full">
             <div className="flex h-full flex-col rounded-3xl border border-sage/40 bg-gradient-to-br from-sage-100 to-paper p-7">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sage/20 text-pine">
                 <IconLeaf className="h-6 w-6" />
@@ -251,7 +256,7 @@ export default function HomePage() {
                 body: "Garde assurée, paiement sécurisé, et un carnet de garde avec photos chaque jour.",
               },
             ].map((s, i) => (
-              <Reveal key={s.n} delay={i * 110}>
+              <Reveal key={s.n} variant="scale" delay={i * 130}>
                 <div className="relative h-full rounded-3xl border border-line bg-cream p-6">
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand font-serif text-lg font-semibold text-cream">
                     {s.n}
@@ -270,7 +275,7 @@ export default function HomePage() {
       {/* FOCUS CARNET DE GARDE */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 py-16">
         <div className="grid items-center gap-10 md:grid-cols-2">
-          <Reveal className="order-2 md:order-1">
+          <Reveal variant="left" className="order-2 md:order-1">
             <Eyebrow>Le petit plus qui rassure</Eyebrow>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-ink md:text-4xl">
               Le carnet de garde
@@ -293,7 +298,7 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <Reveal delay={120} className="order-1 md:order-2">
+          <Reveal variant="right" delay={120} className="order-1 md:order-2">
             <div className="mx-auto max-w-sm rounded-3xl border border-line bg-paper p-4 shadow-xl">
               <div className="flex aspect-[4/3] items-center justify-center rounded-2xl bg-gradient-to-br from-sage-100 to-sand text-brand/70">
                 <GustaveMark className="h-20 w-20" />
@@ -316,7 +321,7 @@ export default function HomePage() {
 
       {/* TÉMOIGNAGE */}
       <section className="relative z-10 mx-auto max-w-4xl px-5 pb-16">
-        <Reveal>
+        <Reveal variant="zoom">
           <figure className="rounded-3xl border border-line bg-paper p-8 text-center md:p-12">
             <div className="flex justify-center gap-1 text-gold">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -336,7 +341,7 @@ export default function HomePage() {
 
       {/* CTA FINAL */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 pb-20">
-        <Reveal>
+        <Reveal variant="scale">
           <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand to-brand-700 px-6 py-14 text-center text-cream md:px-10">
             <div
               aria-hidden

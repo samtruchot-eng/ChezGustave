@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { register } from "@/app/inscription/actions";
 import { cn } from "@/lib/utils";
+import { IconPaw, IconLeaf } from "@/components/ui/icons";
 import type { ProfileMode } from "@/lib/constants";
 
 const input =
@@ -24,8 +25,18 @@ export function SignupForm({ defaultRole }: { defaultRole: ProfileMode }) {
         <div className="grid grid-cols-2 gap-2">
           {(
             [
-              { value: "owner", label: "🐶 Propriétaire", hint: "Je fais garder mon chien" },
-              { value: "sitter", label: "🌿 Gardien", hint: "Je garde des chiens" },
+              {
+                value: "owner",
+                label: "Propriétaire",
+                hint: "Je fais garder mon chien",
+                Icon: IconPaw,
+              },
+              {
+                value: "sitter",
+                label: "Gardien",
+                hint: "Je garde des chiens",
+                Icon: IconLeaf,
+              },
             ] as const
           ).map((opt) => (
             <button
@@ -39,10 +50,11 @@ export function SignupForm({ defaultRole }: { defaultRole: ProfileMode }) {
                   : "border-line hover:bg-sand"
               )}
             >
-              <span className="block text-sm font-semibold text-ink">
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <opt.Icon className="h-4 w-4 text-brand" />
                 {opt.label}
               </span>
-              <span className="block text-xs text-muted">{opt.hint}</span>
+              <span className="mt-0.5 block text-xs text-muted">{opt.hint}</span>
             </button>
           ))}
         </div>

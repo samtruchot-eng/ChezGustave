@@ -79,7 +79,7 @@ export function OwnerPublishForm({ defaultRegion }: { defaultRegion?: string }) 
 
       <label className="flex items-center gap-2 text-sm text-ink-soft">
         <input type="checkbox" name="lastMinute" value="true" />
-        C&apos;est une garde de dernière minute ⏱️
+        C&apos;est une garde de dernière minute
       </label>
 
       {state.error && (

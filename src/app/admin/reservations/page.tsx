@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Badge } from "@/components/ui/Badge";
 import { formatCHF, formatDateRange } from "@/lib/utils";
 import { BOOKING_STATUS_LABELS, type BookingStatus } from "@/lib/constants";
+import { IconCalendar } from "@/components/ui/icons";
 
 export const metadata = { title: "Réservations · Admin" };
 
@@ -32,7 +33,7 @@ export default async function AdminBookingsPage() {
 
       {bookings.length === 0 ? (
         <div className="card p-10 text-center">
-          <span className="text-4xl">📅</span>
+          <IconCalendar className="mx-auto h-9 w-9 text-muted" />
           <p className="mt-2 text-sm text-muted">
             Aucune réservation pour l&apos;instant.
           </p>

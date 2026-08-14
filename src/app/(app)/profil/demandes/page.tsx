@@ -9,6 +9,7 @@ import {
   type ApplicationStatus,
 } from "@/lib/constants";
 import { formatDateRange } from "@/lib/utils";
+import { IconInbox, IconPin, IconChevronRight } from "@/components/ui/icons";
 
 export const metadata = { title: "Mes demandes" };
 
@@ -58,8 +59,8 @@ async function SitterApplications({ userId }: { userId: string }) {
           >
             <div>
               <p className="font-medium text-ink">{a.listing.title}</p>
-              <p className="text-sm text-muted">
-                📍 {a.listing.region} ·{" "}
+              <p className="flex items-center gap-1 text-sm text-muted">
+                <IconPin className="h-3.5 w-3.5" /> {a.listing.region} ·{" "}
                 {formatDateRange(a.listing.startDate, a.listing.endDate)}
               </p>
             </div>
@@ -112,9 +113,9 @@ async function OwnerApplications({ userId }: { userId: string }) {
           <div className="mt-3 flex justify-end">
             <Link
               href={`/messages/nouveau?to=${a.sitter.id}`}
-              className="text-sm font-medium text-brand hover:underline"
+              className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline"
             >
-              Répondre →
+              Répondre <IconChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </li>
@@ -126,7 +127,7 @@ async function OwnerApplications({ userId }: { userId: string }) {
 function Empty({ text }: { text: string }) {
   return (
     <div className="card p-10 text-center">
-      <span className="text-4xl">📨</span>
+      <IconInbox className="mx-auto h-9 w-9 text-muted" />
       <p className="mt-2 text-sm text-muted">{text}</p>
     </div>
   );

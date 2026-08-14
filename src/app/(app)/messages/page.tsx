@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { Avatar } from "@/components/ui/Avatar";
+import { IconChat } from "@/components/ui/icons";
 
 export const metadata = { title: "Messages" };
 
@@ -24,7 +25,7 @@ export default async function MessagesPage() {
 
       {conversations.length === 0 ? (
         <div className="card p-10 text-center">
-          <span className="text-4xl">💬</span>
+          <IconChat className="mx-auto h-9 w-9 text-muted" />
           <p className="mt-2 font-medium text-ink">Aucune conversation</p>
           <p className="text-sm text-muted">
             Contactez un gardien ou postulez à une escapade pour démarrer un

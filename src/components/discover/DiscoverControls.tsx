@@ -5,13 +5,17 @@ import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   AMBIANCES,
-  AMBIANCE_EMOJI,
   AMBIANCE_LABELS,
   ANIMALS,
-  ANIMAL_EMOJI,
   ANIMAL_LABELS,
   type ProfileMode,
 } from "@/lib/constants";
+import {
+  IconSearch,
+  IconClock,
+  AmbianceIcon,
+  AnimalIcon,
+} from "@/components/ui/icons";
 
 export function DiscoverControls({ mode }: { mode: ProfileMode }) {
   const router = useRouter();
@@ -51,7 +55,7 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
       <div className="flex gap-2">
         <div className="relative flex-1">
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-            🔍
+            <IconSearch className="h-4 w-4" />
           </span>
           <input
             value={q}
@@ -93,7 +97,8 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
                   update({ ambiance: activeAmbiance === a ? null : a })
                 }
               >
-                {AMBIANCE_EMOJI[a]} {AMBIANCE_LABELS[a]}
+                <AmbianceIcon value={a} className="h-4 w-4" />{" "}
+                {AMBIANCE_LABELS[a]}
               </FilterChip>
             ))}
           </>
@@ -107,7 +112,7 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
                 active={activeAnimal === a}
                 onClick={() => update({ animal: activeAnimal === a ? null : a })}
               >
-                {ANIMAL_EMOJI[a]} {ANIMAL_LABELS[a]}
+                <AnimalIcon value={a} className="h-4 w-4" /> {ANIMAL_LABELS[a]}
               </FilterChip>
             ))}
           </>
@@ -118,7 +123,7 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
             active={lastMinute}
             onClick={() => update({ lastMinute: lastMinute ? null : "1" })}
           >
-            ⏱️ Dernière minute
+            <IconClock className="h-4 w-4" /> Dernière minute
           </FilterChip>
         )}
       </div>

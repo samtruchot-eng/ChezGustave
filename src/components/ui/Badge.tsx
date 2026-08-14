@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+import { IconStar, IconShield } from "./icons";
 
 type Tone = "brand" | "sage" | "gold" | "neutral" | "terracotta";
 
@@ -37,7 +38,7 @@ export function Badge({
 export function SuperSitterBadge({ className }: { className?: string }) {
   return (
     <Badge tone="gold" className={cn("font-semibold", className)}>
-      ⭐ Super Gardien
+      <IconStar className="h-3.5 w-3.5" /> Super Gardien
     </Badge>
   );
 }
@@ -46,7 +47,8 @@ export function SuperSitterBadge({ className }: { className?: string }) {
 export function InsuranceBadge({ className }: { className?: string }) {
   return (
     <Badge tone="sage" className={className}>
-      🛡️ Garde couverte par l&apos;assurance Chez Gustave
+      <IconShield className="h-3.5 w-3.5" /> Garde couverte par l&apos;assurance
+      Chez Gustave
     </Badge>
   );
 }

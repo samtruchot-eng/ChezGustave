@@ -9,7 +9,20 @@ import { ModeToggle } from "@/components/layout/ModeToggle";
 import { REFERRAL_BONUS_CHF } from "@/lib/constants";
 import { formatCHF } from "@/lib/utils";
 import { isAdminEmail } from "@/lib/admin";
+import {
+  IconInbox,
+  IconHeart,
+  IconBook,
+  IconGift,
+  IconCrown,
+  IconChevronRight,
+  IconCheck,
+  IconLogout,
+  IconPaw,
+} from "@/components/ui/icons";
 import { logout } from "./actions";
+
+type IconType = (props: { className?: string }) => React.ReactElement;
 
 export const metadata = { title: "Profil" };
 
@@ -32,22 +45,27 @@ export default async function ProfilPage() {
     ? me.sitterProfile?.verified
     : me.ownerProfile?.verified;
 
-  const rows: { icon: string; label: string; href: string; hint?: string }[] = [
+  const rows: {
+    icon: IconType;
+    label: string;
+    href: string;
+    hint?: string;
+  }[] = [
     {
-      icon: "📨",
+      icon: IconInbox,
       label: "Mes demandes",
       href: "/profil/demandes",
       hint: `${applicationsCount} candidature${applicationsCount > 1 ? "s" : ""}`,
     },
     {
-      icon: "❤️",
+      icon: IconHeart,
       label: "Mes favoris",
       href: "/profil/favoris",
       hint: `${favoritesCount}`,
     },
-    { icon: "📔", label: "Carnet de garde", href: "/carnet" },
+    { icon: IconBook, label: "Carnet de garde", href: "/carnet" },
     {
-      icon: "🎁",
+      icon: IconGift,
       label: "Parrainage",
       href: "/profil/parrainage",
       hint: `${formatCHF(REFERRAL_BONUS_CHF)} offerts`,
@@ -65,7 +83,11 @@ export default async function ProfilPage() {
               <h1 className="truncate text-xl font-bold text-ink">
                 {me.name}
               </h1>
-              {verified && <Badge tone="sage">✓ Vérifié</Badge>}
+              {verified && (
+                <Badge tone="sage">
+                  <IconCheck className="h-3.5 w-3.5" /> Vérifié
+                </Badge>
+              )}
             </div>
             <p className="text-sm text-muted">{me.email}</p>
           </div>
@@ -91,9 +113,9 @@ export default async function ProfilPage() {
           href="/admin"
           className="card flex items-center gap-3 bg-ink p-4 text-cream hover:opacity-95"
         >
-          <span className="text-xl">👑</span>
+          <IconCrown className="h-5 w-5 text-gold" />
           <span className="flex-1 font-medium">Espace administrateur</span>
-          <span className="text-cream/70">›</span>
+          <IconChevronRight className="h-4 w-4 text-cream/70" />
         </Link>
       )}
 
@@ -105,10 +127,12 @@ export default async function ProfilPage() {
             href={r.href}
             className="flex items-center gap-3 p-4 first:rounded-t-2xl last:rounded-b-2xl hover:bg-cream"
           >
-            <span className="text-xl">{r.icon}</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand/10 text-brand">
+              <r.icon className="h-5 w-5" />
+            </span>
             <span className="flex-1 font-medium text-ink">{r.label}</span>
             {r.hint && <span className="text-sm text-muted">{r.hint}</span>}
-            <span className="text-muted">›</span>
+            <IconChevronRight className="h-4 w-4 text-muted" />
           </Link>
         ))}
       </section>
@@ -133,12 +157,14 @@ export default async function ProfilPage() {
           variant="ghost"
           className="w-full border border-line"
         >
+          <IconLogout className="h-4 w-4" />
           Se déconnecter
         </Button>
       </form>
 
-      <p className="pb-2 text-center text-xs text-muted">
-        Chez Gustave · Genève et sa région 🐾
+      <p className="flex items-center justify-center gap-1.5 pb-2 text-center text-xs text-muted">
+        Chez Gustave · Genève et sa région
+        <IconPaw className="h-3.5 w-3.5" />
       </p>
     </div>
   );
@@ -156,12 +182,13 @@ function Stat({ label, value }: { label: string; value: number }) {
 function Check({ ok, label }: { ok?: boolean; label: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span
-        className={ok ? "text-brand" : "text-muted"}
-        aria-hidden="true"
-      >
-        {ok ? "✓" : "○"}
-      </span>
+      {ok ? (
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-sage-100 text-pine">
+          <IconCheck className="h-3.5 w-3.5" />
+        </span>
+      ) : (
+        <span className="h-5 w-5 rounded-full border border-line" />
+      )}
       <span className={ok ? "text-ink-soft" : "text-muted"}>{label}</span>
     </div>
   );

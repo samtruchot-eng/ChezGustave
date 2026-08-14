@@ -5,11 +5,17 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Rating } from "@/components/ui/Rating";
 import { Badge, SuperSitterBadge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
+import {
+  IconPin,
+  IconCheck,
+  IconCalendar,
+  IconVideo,
+  AmbianceIcon,
+  AnimalIcon,
+} from "@/components/ui/icons";
 import { formatCHF, formatDateRange, jsonList } from "@/lib/utils";
 import {
-  AMBIANCE_EMOJI,
   AMBIANCE_LABELS,
-  ANIMAL_EMOJI,
   ANIMAL_LABELS,
   type Ambiance,
   type Animal,
@@ -47,10 +53,16 @@ export default async function GardienPage({
           />
         </div>
         <h1 className="mt-3 text-2xl font-bold text-ink">{sitter.firstName}</h1>
-        <p className="text-muted">📍 {sitter.region}</p>
+        <p className="flex items-center justify-center gap-1 text-muted">
+          <IconPin className="h-4 w-4" /> {sitter.region}
+        </p>
         <div className="mt-2 flex items-center justify-center gap-2">
           <Rating value={sitter.ratingAvg} count={sitter.ratingCount} />
-          {sitter.verified && <Badge tone="sage">✓ Vérifié</Badge>}
+          {sitter.verified && (
+            <Badge tone="sage">
+              <IconCheck className="h-3.5 w-3.5" /> Vérifié
+            </Badge>
+          )}
           {sitter.isSuperSitter && <SuperSitterBadge />}
         </div>
         {sitter.headline && (
@@ -81,7 +93,7 @@ export default async function GardienPage({
             <div className="mt-1 flex flex-wrap gap-2">
               {animals.map((a) => (
                 <span key={a} className="chip">
-                  {ANIMAL_EMOJI[a]} {ANIMAL_LABELS[a]}
+                  <AnimalIcon value={a} className="h-4 w-4" /> {ANIMAL_LABELS[a]}
                 </span>
               ))}
             </div>
@@ -94,7 +106,8 @@ export default async function GardienPage({
               <div className="mt-1 flex flex-wrap gap-2">
                 {ambiances.map((a) => (
                   <span key={a} className="chip">
-                    {AMBIANCE_EMOJI[a]} {AMBIANCE_LABELS[a]}
+                    <AmbianceIcon value={a} className="h-4 w-4" />{" "}
+                    {AMBIANCE_LABELS[a]}
                   </span>
                 ))}
               </div>
@@ -110,7 +123,8 @@ export default async function GardienPage({
           <div className="mt-2 flex flex-wrap gap-2">
             {sitter.availabilities.map((a) => (
               <span key={a.id} className="chip">
-                🗓️ {formatDateRange(a.startDate, a.endDate)}
+                <IconCalendar className="h-4 w-4" />{" "}
+                {formatDateRange(a.startDate, a.endDate)}
               </span>
             ))}
           </div>
@@ -151,7 +165,7 @@ export default async function GardienPage({
             href={`/messages/nouveau?to=${sitter.user.id}`}
             variant="secondary"
           >
-            📹 Appel vidéo
+            <IconVideo className="h-4 w-4" /> Appel vidéo
           </ButtonLink>
           <ButtonLink href={`/messages/nouveau?to=${sitter.user.id}`}>
             Contacter {sitter.firstName}

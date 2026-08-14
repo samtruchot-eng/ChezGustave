@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { ListingCard } from "@/components/discover/ListingCard";
+import { IconHeart } from "@/components/ui/icons";
 
 export const metadata = { title: "Mes favoris" };
 
@@ -29,7 +30,7 @@ export default async function FavorisPage() {
 
       {listings.length === 0 ? (
         <div className="card p-10 text-center">
-          <span className="text-4xl">❤️</span>
+          <IconHeart className="mx-auto h-9 w-9 text-muted" />
           <p className="mt-2 font-medium text-ink">Aucun favori</p>
           <p className="text-sm text-muted">
             Touchez le cœur sur une escapade ou un gardien pour le retrouver

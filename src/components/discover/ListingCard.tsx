@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
+import { GustaveMark } from "@/components/ui/Logo";
+import { IconClock, IconPin, AmbianceIcon } from "@/components/ui/icons";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
-import { AMBIANCE_EMOJI, AMBIANCE_LABELS, type Ambiance } from "@/lib/constants";
+import { AMBIANCE_LABELS, type Ambiance } from "@/lib/constants";
 
 interface ListingCardData {
   id: string;
@@ -35,19 +37,20 @@ export function ListingCard({ listing }: { listing: ListingCardData }) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-5xl">
-            🐶
+          <div className="flex h-full items-center justify-center">
+            <GustaveMark className="h-16 w-16 opacity-70" />
           </div>
         )}
         <div className="absolute left-3 top-3 flex gap-2">
           {listing.lastMinute && (
             <Badge tone="terracotta" className="backdrop-blur">
-              ⏱️ Dernière minute
+              <IconClock className="h-3.5 w-3.5" /> Dernière minute
             </Badge>
           )}
           {ambiance && (
             <span className="chip bg-cream/90 backdrop-blur">
-              {AMBIANCE_EMOJI[ambiance]} {AMBIANCE_LABELS[ambiance]}
+              <AmbianceIcon value={ambiance} className="h-3.5 w-3.5" />{" "}
+              {AMBIANCE_LABELS[ambiance]}
             </span>
           )}
         </div>
@@ -59,8 +62,9 @@ export function ListingCard({ listing }: { listing: ListingCardData }) {
             <h3 className="font-semibold leading-snug text-ink group-hover:text-brand">
               {listing.title}
             </h3>
-            <p className="mt-0.5 text-sm text-muted">
-              📍 {listing.region} · {listing.dog.name}
+            <p className="mt-0.5 flex items-center gap-1 text-sm text-muted">
+              <IconPin className="h-3.5 w-3.5 shrink-0" />
+              {listing.region} · {listing.dog.name}
               {listing.dog.breed ? ` · ${listing.dog.breed}` : ""}
             </p>
           </div>

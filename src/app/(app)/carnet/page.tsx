@@ -4,6 +4,8 @@ import { requireUser } from "@/lib/session";
 import { getMode } from "@/lib/mode";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { GustaveMark } from "@/components/ui/Logo";
+import { IconBook, IconRoute, IconCamera } from "@/components/ui/icons";
 import { formatDateRange } from "@/lib/utils";
 
 export const metadata = { title: "Carnet de garde" };
@@ -32,7 +34,7 @@ export default async function CarnetPage() {
       <div className="space-y-4">
         <h1 className="text-2xl font-bold text-ink">Carnet de garde</h1>
         <div className="card p-10 text-center">
-          <span className="text-4xl">📔</span>
+          <IconBook className="mx-auto h-9 w-9 text-muted" />
           <p className="mt-2 font-medium text-ink">Aucune garde en cours</p>
           <p className="text-sm text-muted">
             Le carnet s&apos;anime dès qu&apos;une garde démarre : une photo et
@@ -62,8 +64,8 @@ export default async function CarnetPage() {
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-5xl">
-              🐶
+            <div className="flex h-full items-center justify-center">
+              <GustaveMark className="h-16 w-16 opacity-70" />
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
@@ -115,7 +117,7 @@ export default async function CarnetPage() {
                 <p className="mt-1 text-ink-soft">{entry.note}</p>
               )}
               <div className="mt-3 flex items-center gap-2 text-sm text-muted">
-                🐾 Balade du jour
+                <IconRoute className="h-4 w-4 text-brand" /> Balade du jour
                 <span className="chip">2,4 km · 45 min</span>
               </div>
             </div>
@@ -125,7 +127,7 @@ export default async function CarnetPage() {
 
       {/* Album souvenir */}
       <section className="card bg-sage-100 p-5 text-center">
-        <span className="text-3xl">📸</span>
+        <IconCamera className="mx-auto h-8 w-8 text-pine" />
         <h2 className="mt-1 font-semibold text-brand">Album souvenir</h2>
         <p className="text-sm text-ink-soft">
           À la fin du séjour, toutes les photos et les mots seront réunis dans

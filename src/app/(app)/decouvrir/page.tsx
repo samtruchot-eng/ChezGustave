@@ -4,6 +4,7 @@ import { DiscoverControls } from "@/components/discover/DiscoverControls";
 import { ListingCard } from "@/components/discover/ListingCard";
 import { SitterCard } from "@/components/discover/SitterCard";
 import { MapView, type MapPoint } from "@/components/discover/MapView";
+import { GustaveMark } from "@/components/ui/Logo";
 import { GEO_FALLBACK } from "@/lib/geo";
 
 export const metadata = { title: "Découvrir" };
@@ -42,7 +43,7 @@ export default async function DecouvrirPage({
         <p className="text-sm text-muted">
           {mode === "owner"
             ? "Des gardiens passionnés, près de chez vous."
-            : "Des vacances à la campagne — payées et logées. 🌿"}
+            : "Des vacances au vert — payées et logées."}
         </p>
       </div>
 
@@ -107,7 +108,7 @@ async function OwnerModeResults({
       lat: GEO_FALLBACK.byRegion[s.region]?.lat ?? GEO_FALLBACK.lat,
       lng: GEO_FALLBACK.byRegion[s.region]?.lng ?? GEO_FALLBACK.lng,
       label: s.firstName,
-      sub: `${s.region} · ⭐ ${s.ratingAvg.toFixed(1)}`,
+      sub: `${s.region} · ★ ${s.ratingAvg.toFixed(1)}`,
       href: `/decouvrir/gardien/${s.user.id}`,
       price: s.dailyRate,
     }));
@@ -126,7 +127,7 @@ async function OwnerModeResults({
 function EmptyState({ label }: { label: string }) {
   return (
     <div className="card flex flex-col items-center gap-2 p-10 text-center">
-      <span className="text-4xl">🐾</span>
+      <GustaveMark className="h-14 w-14 opacity-70" />
       <p className="font-medium text-ink">Aucune {label} pour l&apos;instant</p>
       <p className="text-sm text-muted">
         Essayez d&apos;élargir votre recherche ou de retirer des filtres.

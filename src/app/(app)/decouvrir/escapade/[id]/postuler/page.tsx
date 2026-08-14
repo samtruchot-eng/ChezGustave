@@ -4,6 +4,7 @@ import { getListingById } from "@/lib/queries";
 import { requireUser } from "@/lib/session";
 import { Button } from "@/components/ui/Button";
 import { InsuranceBadge } from "@/components/ui/Badge";
+import { IconPin } from "@/components/ui/icons";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
 import { computeBreakdown } from "@/lib/money";
 import { applyToListing } from "./actions";
@@ -38,8 +39,8 @@ export default async function PostulerPage({
       {/* Récapitulatif */}
       <section className="card p-5">
         <h2 className="font-semibold text-ink">{listing.title}</h2>
-        <p className="mt-1 text-sm text-muted">
-          📍 {listing.region} · {listing.dog.name}
+        <p className="mt-1 flex items-center gap-1 text-sm text-muted">
+          <IconPin className="h-3.5 w-3.5" /> {listing.region} · {listing.dog.name}
         </p>
         <div className="mt-3 space-y-1 text-sm">
           <Row label="Dates">

@@ -6,6 +6,20 @@ import { Badge, InsuranceBadge } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
 import { Rating } from "@/components/ui/Rating";
 import { ButtonLink } from "@/components/ui/Button";
+import { GustaveMark } from "@/components/ui/Logo";
+import {
+  IconClock,
+  IconPin,
+  IconHome,
+  IconCalendar,
+  IconMountain,
+  IconPaw,
+  IconBowl,
+  IconBulb,
+  IconGraduation,
+  IconHeartPulse,
+  AmbianceIcon,
+} from "@/components/ui/icons";
 import {
   formatCHF,
   formatDateRange,
@@ -13,12 +27,13 @@ import {
   nightsBetween,
 } from "@/lib/utils";
 import {
-  AMBIANCE_EMOJI,
   AMBIANCE_LABELS,
   CARE_TYPE_LABELS,
   type Ambiance,
   type CareType,
 } from "@/lib/constants";
+
+type IconType = (props: { className?: string }) => React.ReactElement;
 
 export default async function EscapadePage({
   params,
@@ -34,12 +49,12 @@ export default async function EscapadePage({
   const ambiance = listing.ambiance as Ambiance | null;
   const nearby = jsonList(listing.nearbyActivities);
 
-  const passport: { label: string; value: string | null; icon: string }[] = [
-    { label: "Caractère", value: dog.character, icon: "😊" },
-    { label: "Alimentation", value: dog.food, icon: "🍖" },
-    { label: "À savoir", value: dog.goodToKnow, icon: "💡" },
-    { label: "Commandes", value: dog.commands, icon: "🎓" },
-    { label: "Vétérinaire", value: dog.vet, icon: "🩺" },
+  const passport: { label: string; value: string | null; icon: IconType }[] = [
+    { label: "Caractère", value: dog.character, icon: IconPaw },
+    { label: "Alimentation", value: dog.food, icon: IconBowl },
+    { label: "À savoir", value: dog.goodToKnow, icon: IconBulb },
+    { label: "Commandes", value: dog.commands, icon: IconGraduation },
+    { label: "Vétérinaire", value: dog.vet, icon: IconHeartPulse },
   ];
 
   return (
@@ -58,17 +73,20 @@ export default async function EscapadePage({
             priority
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-6xl">
-            🐶
+          <div className="flex h-full items-center justify-center">
+            <GustaveMark className="h-20 w-20 opacity-70" />
           </div>
         )}
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           {listing.lastMinute && (
-            <Badge tone="terracotta">⏱️ Dernière minute</Badge>
+            <Badge tone="terracotta">
+              <IconClock className="h-3.5 w-3.5" /> Dernière minute
+            </Badge>
           )}
           {ambiance && (
             <span className="chip bg-cream/90">
-              {AMBIANCE_EMOJI[ambiance]} {AMBIANCE_LABELS[ambiance]}
+              <AmbianceIcon value={ambiance} className="h-3.5 w-3.5" />{" "}
+              {AMBIANCE_LABELS[ambiance]}
             </span>
           )}
         </div>
@@ -77,15 +95,18 @@ export default async function EscapadePage({
       {/* Titre & infos clés */}
       <div>
         <h1 className="text-2xl font-bold text-ink">{listing.title}</h1>
-        <p className="mt-1 text-muted">
-          📍 {listing.region} · {formatDateRange(listing.startDate, listing.endDate)}
+        <p className="mt-1 flex items-center gap-1 text-muted">
+          <IconPin className="h-4 w-4" /> {listing.region} ·{" "}
+          {formatDateRange(listing.startDate, listing.endDate)}
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span className="chip">
-            🗓️ {nights} nuit{nights > 1 ? "s" : ""}
+            <IconCalendar className="h-3.5 w-3.5" /> {nights} nuit
+            {nights > 1 ? "s" : ""}
           </span>
           <span className="chip">
-            🏠 {CARE_TYPE_LABELS[listing.careType as CareType]}
+            <IconHome className="h-3.5 w-3.5" />{" "}
+            {CARE_TYPE_LABELS[listing.careType as CareType]}
           </span>
           <span className="chip font-semibold text-brand">
             {formatCHF(listing.price)}
@@ -102,7 +123,7 @@ export default async function EscapadePage({
       {/* Passeport du chien */}
       <section className="card p-5">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">🐶</span>
+          <GustaveMark className="h-9 w-9" />
           <div>
             <h2 className="font-semibold text-ink">
               Le passeport de {dog.name}
@@ -118,7 +139,7 @@ export default async function EscapadePage({
             .filter((p) => p.value)
             .map((p) => (
               <div key={p.label} className="flex gap-3">
-                <span className="text-lg">{p.icon}</span>
+                <p.icon className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
                 <div>
                   <dt className="text-xs font-medium uppercase tracking-wide text-muted">
                     {p.label}
@@ -133,7 +154,9 @@ export default async function EscapadePage({
       {/* Que faire autour */}
       {nearby.length > 0 && (
         <section className="card p-5">
-          <h2 className="font-semibold text-ink">🌄 Que faire autour</h2>
+          <h2 className="flex items-center gap-2 font-semibold text-ink">
+            <IconMountain className="h-5 w-5 text-brand" /> Que faire autour
+          </h2>
           <p className="text-sm text-muted">
             Transformez la garde en mini-séjour.
           </p>

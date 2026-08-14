@@ -2,8 +2,9 @@ import Link from "next/link";
 import { Avatar } from "@/components/ui/Avatar";
 import { Rating } from "@/components/ui/Rating";
 import { SuperSitterBadge } from "@/components/ui/Badge";
+import { IconPin, AnimalIcon } from "@/components/ui/icons";
 import { formatCHF, jsonList } from "@/lib/utils";
-import { ANIMAL_EMOJI, type Animal } from "@/lib/constants";
+import { type Animal } from "@/lib/constants";
 
 interface SitterCardData {
   firstName: string;
@@ -38,7 +39,9 @@ export function SitterCard({ sitter }: { sitter: SitterCardData }) {
           </h3>
           <Rating value={sitter.ratingAvg} count={sitter.ratingCount} />
         </div>
-        <p className="mt-0.5 text-sm text-muted">📍 {sitter.region}</p>
+        <p className="mt-0.5 flex items-center gap-1 text-sm text-muted">
+          <IconPin className="h-3.5 w-3.5" /> {sitter.region}
+        </p>
         {sitter.headline && (
           <p className="mt-1 line-clamp-2 text-sm text-ink-soft">
             {sitter.headline}
@@ -47,8 +50,13 @@ export function SitterCard({ sitter }: { sitter: SitterCardData }) {
         <div className="mt-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {sitter.isSuperSitter && <SuperSitterBadge />}
-            <span className="text-sm" title="Animaux acceptés">
-              {animals.map((a) => ANIMAL_EMOJI[a]).join(" ")}
+            <span
+              className="flex items-center gap-1 text-muted"
+              title="Animaux acceptés"
+            >
+              {animals.map((a) => (
+                <AnimalIcon key={a} value={a} className="h-4 w-4" />
+              ))}
             </span>
           </div>
           <span className="text-sm font-semibold text-brand">
