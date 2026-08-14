@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/fraunces";
 import "@fontsource-variable/sora";
 import "@fontsource/great-vibes";
 import "./globals.css";

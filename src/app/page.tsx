@@ -17,7 +17,7 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="page-modern bg-leaf-pattern relative overflow-hidden">
+    <div className="bg-leaf-pattern relative overflow-hidden">
       {/* Halos décoratifs */}
       <div
         aria-hidden
