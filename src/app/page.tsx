@@ -2,6 +2,18 @@ import Link from "next/link";
 import { Logo, GustaveMark } from "@/components/ui/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { EnterAppButton } from "@/components/home/EnterAppButton";
+import { Reveal } from "@/components/ui/Reveal";
+import {
+  IconLeaf,
+  IconPaw,
+  IconShield,
+  IconHome,
+  IconBook,
+  IconStar,
+  IconCamera,
+  IconCheck,
+  IconRoute,
+} from "@/components/ui/icons";
 
 export default function HomePage() {
   return (
@@ -37,9 +49,10 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 pb-10 pt-6 md:pt-12">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          <div className="animate-fade-in-up">
+          <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3 py-1 text-sm font-medium text-brand shadow-sm">
-              🌿 Genève et sa région · lancement cet été
+              <IconLeaf className="h-4 w-4 text-sage" />
+              Genève et sa région · lancement cet été
             </span>
             <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.05] tracking-tight text-ink md:text-6xl">
               Gardez un chien,
@@ -54,10 +67,12 @@ export default function HomePage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <EnterAppButton mode="owner">
-                🐶 Je fais garder mon chien
+                <IconPaw className="h-4 w-4" />
+                Je fais garder mon chien
               </EnterAppButton>
               <EnterAppButton mode="sitter" variant="gold">
-                🌿 Je deviens gardien
+                <IconLeaf className="h-4 w-4" />
+                Je deviens gardien
               </EnterAppButton>
             </div>
 
@@ -72,12 +87,11 @@ export default function HomePage() {
                 <Dot /> Carnet de garde quotidien
               </span>
             </div>
-          </div>
+          </Reveal>
 
-          {/* Visuel hero : panneau dégradé + cartes flottantes */}
-          <div className="relative animate-fade-in-up">
+          {/* Visuel hero */}
+          <Reveal delay={120} className="relative">
             <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand via-brand-600 to-brand-700 p-8 shadow-[0_30px_60px_-25px_rgba(141,61,28,0.6)]">
-              {/* motif */}
               <div
                 aria-hidden
                 className="absolute inset-0 opacity-20"
@@ -101,27 +115,32 @@ export default function HomePage() {
             </div>
 
             {/* Carte flottante : carnet */}
-            <div className="absolute -bottom-5 -left-5 w-52 rotate-[-4deg] rounded-2xl border border-line bg-paper p-3 shadow-xl">
-              <div className="flex items-center gap-2">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-sage-100 text-lg">
-                  📸
-                </span>
-                <div>
-                  <p className="text-xs font-semibold text-ink">
-                    Nouvelle photo
-                  </p>
-                  <p className="text-[0.7rem] text-muted">
-                    Gustave a adoré sa balade !
-                  </p>
+            <div className="absolute -bottom-5 -left-5 rotate-[-4deg]">
+              <div className="animate-float w-52 rounded-2xl border border-line bg-paper p-3 shadow-xl">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-sage-100 text-sage">
+                    <IconCamera className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold text-ink">
+                      Nouvelle photo
+                    </p>
+                    <p className="text-[0.7rem] text-muted">
+                      Gustave a adoré sa balade !
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Chip flottante : super gardien */}
-            <div className="absolute -right-3 top-6 rotate-[5deg] rounded-full border border-line bg-paper px-3 py-1.5 text-sm font-semibold text-gold-600 shadow-lg">
-              ⭐ Super Gardien
+            <div className="absolute -right-3 top-6 rotate-[5deg]">
+              <div className="animate-float-slow inline-flex items-center gap-1 rounded-full border border-line bg-paper px-3 py-1.5 text-sm font-semibold text-gold-600 shadow-lg">
+                <IconStar className="h-4 w-4 text-gold" />
+                Super Gardien
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -129,83 +148,91 @@ export default function HomePage() {
       <section className="relative z-10 border-y border-line bg-paper/60">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-5 py-8 sm:grid-cols-4">
           {[
-            { icon: "🏡", label: "À domicile", sub: "Chez lui, dans ses repères" },
-            { icon: "🛡️", label: "Assuré", sub: "Chaque garde couverte" },
-            { icon: "📔", label: "Carnet de garde", sub: "Photos & nouvelles" },
-            { icon: "✓", label: "Vérifié", sub: "Profils de confiance" },
-          ].map((t) => (
-            <div key={t.label} className="text-center">
-              <div className="text-2xl">{t.icon}</div>
-              <p className="mt-1 font-semibold text-ink">{t.label}</p>
+            { Icon: IconHome, label: "À domicile", sub: "Chez lui, dans ses repères" },
+            { Icon: IconShield, label: "Assuré", sub: "Chaque garde couverte" },
+            { Icon: IconBook, label: "Carnet de garde", sub: "Photos & nouvelles" },
+            { Icon: IconCheck, label: "Vérifié", sub: "Profils de confiance" },
+          ].map((t, i) => (
+            <Reveal key={t.label} delay={i * 90} className="text-center">
+              <t.Icon className="mx-auto h-7 w-7 text-brand" />
+              <p className="mt-2 font-semibold text-ink">{t.label}</p>
               <p className="text-xs text-muted">{t.sub}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* POUR QUI */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 py-16">
-        <Eyebrow>Deux façons de vivre l&apos;aventure</Eyebrow>
-        <h2 className="mt-2 max-w-2xl font-serif text-3xl font-semibold text-ink md:text-4xl">
-          Que vous ayez un chien ou l&apos;envie d&apos;en garder un
-        </h2>
+        <Reveal>
+          <Eyebrow>Deux façons de vivre l&apos;aventure</Eyebrow>
+          <h2 className="mt-2 max-w-2xl font-serif text-3xl font-semibold text-ink md:text-4xl">
+            Que vous ayez un chien ou l&apos;envie d&apos;en garder un
+          </h2>
+        </Reveal>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
-          {/* Propriétaire */}
-          <div className="rounded-3xl border border-line bg-gradient-to-br from-paper to-sand/40 p-7">
-            <span className="text-3xl">🐶</span>
-            <h3 className="mt-3 font-serif text-2xl font-semibold text-ink">
-              Vous avez un chien
-            </h3>
-            <p className="mt-2 text-ink-soft">
-              Partez l&apos;esprit tranquille : votre compagnon reste à la
-              maison, choyé par un gardien passionné. Vous suivez ses journées en
-              photos.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-ink-soft">
-              <Check2>Pas de stress de transport ni de pension</Check2>
-              <Check2>Un gardien qui vit chez vous, jour et nuit</Check2>
-              <Check2>Des nouvelles quotidiennes, un prix contenu</Check2>
-            </ul>
-            <div className="mt-6">
-              <EnterAppButton mode="owner">Trouver un gardien</EnterAppButton>
+          <Reveal className="h-full">
+            <div className="flex h-full flex-col rounded-3xl border border-line bg-gradient-to-br from-paper to-sand/40 p-7">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand">
+                <IconPaw className="h-6 w-6" />
+              </span>
+              <h3 className="mt-4 font-serif text-2xl font-semibold text-ink">
+                Vous avez un chien
+              </h3>
+              <p className="mt-2 text-ink-soft">
+                Partez l&apos;esprit tranquille : votre compagnon reste à la
+                maison, choyé par un gardien passionné. Vous suivez ses journées
+                en photos.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-ink-soft">
+                <Check2>Pas de stress de transport ni de pension</Check2>
+                <Check2>Un gardien qui vit chez vous, jour et nuit</Check2>
+                <Check2>Des nouvelles quotidiennes, un prix contenu</Check2>
+              </ul>
+              <div className="mt-6 pt-1">
+                <EnterAppButton mode="owner">Trouver un gardien</EnterAppButton>
+              </div>
             </div>
-          </div>
+          </Reveal>
 
-          {/* Gardien */}
-          <div className="rounded-3xl border border-sage/40 bg-gradient-to-br from-sage-100 to-paper p-7">
-            <span className="text-3xl">🌿</span>
-            <h3 className="mt-3 font-serif text-2xl font-semibold text-ink">
-              Vous aimez les chiens
-            </h3>
-            <p className="mt-2 text-ink-soft">
-              Offrez-vous une parenthèse à la campagne : vous séjournez chez le
-              propriétaire, veillez sur son chien… et vous êtes payé{" "}
-              <em>et</em> logé.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-ink-soft">
-              <Check2>Une escapade au vert, pas une corvée</Check2>
-              <Check2>Rémunéré pour chaque garde</Check2>
-              <Check2>Idéal pour étudiants et amoureux des chiens</Check2>
-            </ul>
-            <div className="mt-6">
-              <EnterAppButton mode="sitter" variant="gold">
-                Devenir gardien
-              </EnterAppButton>
+          <Reveal delay={120} className="h-full">
+            <div className="flex h-full flex-col rounded-3xl border border-sage/40 bg-gradient-to-br from-sage-100 to-paper p-7">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sage/20 text-pine">
+                <IconLeaf className="h-6 w-6" />
+              </span>
+              <h3 className="mt-4 font-serif text-2xl font-semibold text-ink">
+                Vous aimez les chiens
+              </h3>
+              <p className="mt-2 text-ink-soft">
+                Offrez-vous une parenthèse à la campagne : vous séjournez chez le
+                propriétaire, veillez sur son chien… et vous êtes payé{" "}
+                <em>et</em> logé.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-ink-soft">
+                <Check2>Une escapade au vert, pas une corvée</Check2>
+                <Check2>Rémunéré pour chaque garde</Check2>
+                <Check2>Idéal pour étudiants et amoureux des chiens</Check2>
+              </ul>
+              <div className="mt-6 pt-1">
+                <EnterAppButton mode="sitter" variant="gold">
+                  Devenir gardien
+                </EnterAppButton>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* COMMENT ÇA MARCHE */}
       <section className="relative z-10 bg-paper/60 py-16">
         <div className="mx-auto max-w-6xl px-5">
-          <div className="text-center">
+          <Reveal className="text-center">
             <Eyebrow center>Simple comme bonjour</Eyebrow>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-ink md:text-4xl">
               Comment ça marche
             </h2>
-          </div>
+          </Reveal>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {[
               {
@@ -223,19 +250,18 @@ export default function HomePage() {
                 title: "Une garde sereine",
                 body: "Garde assurée, paiement sécurisé, et un carnet de garde avec photos chaque jour.",
               },
-            ].map((s) => (
-              <div
-                key={s.n}
-                className="relative rounded-3xl border border-line bg-cream p-6"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand font-serif text-lg font-semibold text-cream">
-                  {s.n}
+            ].map((s, i) => (
+              <Reveal key={s.n} delay={i * 110}>
+                <div className="relative h-full rounded-3xl border border-line bg-cream p-6">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand font-serif text-lg font-semibold text-cream">
+                    {s.n}
+                  </div>
+                  <h3 className="mt-4 font-serif text-xl font-semibold text-ink">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-ink-soft">{s.body}</p>
                 </div>
-                <h3 className="mt-4 font-serif text-xl font-semibold text-ink">
-                  {s.title}
-                </h3>
-                <p className="mt-2 text-sm text-ink-soft">{s.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -244,7 +270,7 @@ export default function HomePage() {
       {/* FOCUS CARNET DE GARDE */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 py-16">
         <div className="grid items-center gap-10 md:grid-cols-2">
-          <div className="order-2 md:order-1">
+          <Reveal className="order-2 md:order-1">
             <Eyebrow>Le petit plus qui rassure</Eyebrow>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-ink md:text-4xl">
               Le carnet de garde
@@ -255,80 +281,91 @@ export default function HomePage() {
               séjour, un album souvenir remis au propriétaire.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
-              {["📸 Photo du jour", "🐾 Balade tracée", "📖 Album souvenir"].map(
-                (t) => (
-                  <span key={t} className="chip">
-                    {t}
-                  </span>
-                )
-              )}
+              <span className="chip">
+                <IconCamera className="h-4 w-4 text-brand" /> Photo du jour
+              </span>
+              <span className="chip">
+                <IconRoute className="h-4 w-4 text-brand" /> Balade tracée
+              </span>
+              <span className="chip">
+                <IconBook className="h-4 w-4 text-brand" /> Album souvenir
+              </span>
             </div>
-          </div>
+          </Reveal>
 
-          {/* aperçu carnet */}
-          <div className="order-1 md:order-2">
+          <Reveal delay={120} className="order-1 md:order-2">
             <div className="mx-auto max-w-sm rounded-3xl border border-line bg-paper p-4 shadow-xl">
-              <div className="flex aspect-[4/3] items-center justify-center rounded-2xl bg-gradient-to-br from-sage-100 to-sand text-6xl">
-                🐕
+              <div className="flex aspect-[4/3] items-center justify-center rounded-2xl bg-gradient-to-br from-sage-100 to-sand text-brand/70">
+                <GustaveMark className="h-20 w-20" />
               </div>
               <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted">
                 Aujourd&apos;hui
               </p>
               <p className="mt-1 text-sm text-ink-soft">
                 « Belle journée ! Gustave a adoré la balade au bord du lac ce
-                matin. Grosse sieste au soleil. 🌞 »
+                matin. Grosse sieste au soleil. »
               </p>
               <div className="mt-3 flex items-center gap-2 text-xs text-muted">
-                🐾 Balade du jour
+                <IconRoute className="h-4 w-4 text-brand" /> Balade du jour
                 <span className="chip">2,4 km · 45 min</span>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* TÉMOIGNAGE */}
       <section className="relative z-10 mx-auto max-w-4xl px-5 pb-16">
-        <figure className="rounded-3xl border border-line bg-paper p-8 text-center md:p-12">
-          <div className="text-3xl text-gold">★★★★★</div>
-          <blockquote className="mt-4 font-serif text-2xl font-medium leading-snug text-ink md:text-3xl">
-            « Notre chien était aux anges, comme à la maison. Des photos tous les
-            jours, on est partis l&apos;esprit tranquille. »
-          </blockquote>
-          <figcaption className="mt-5 text-sm text-muted">
-            Marie, propriétaire de Gustave · Hermance
-          </figcaption>
-        </figure>
+        <Reveal>
+          <figure className="rounded-3xl border border-line bg-paper p-8 text-center md:p-12">
+            <div className="flex justify-center gap-1 text-gold">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <IconStar key={i} className="h-5 w-5" />
+              ))}
+            </div>
+            <blockquote className="mt-4 font-serif text-2xl font-medium leading-snug text-ink md:text-3xl">
+              « Notre chien était aux anges, comme à la maison. Des photos tous
+              les jours, on est partis l&apos;esprit tranquille. »
+            </blockquote>
+            <figcaption className="mt-5 text-sm text-muted">
+              Marie, propriétaire de Gustave · Hermance
+            </figcaption>
+          </figure>
+        </Reveal>
       </section>
 
       {/* CTA FINAL */}
       <section className="relative z-10 mx-auto max-w-6xl px-5 pb-20">
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand to-brand-700 px-6 py-14 text-center text-cream md:px-10">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-cream/10 blur-2xl"
-          />
-          <h2 className="relative font-serif text-3xl font-semibold md:text-4xl">
-            Prêt à tenter l&apos;aventure ?
-          </h2>
-          <p className="relative mx-auto mt-3 max-w-xl text-cream/85">
-            On lance cet été à Genève et dans sa région. Rejoignez les tout
-            premiers — propriétaires comme gardiens.
-          </p>
-          <div className="relative mt-7 flex flex-wrap justify-center gap-3">
-            <EnterAppButton mode="owner" variant="gold">
-              🐶 J&apos;ai un chien
-            </EnterAppButton>
-            <ButtonLink
-              href="/inscription?role=sitter"
-              variant="secondary"
-              size="lg"
-              className="bg-cream/15 text-cream hover:bg-cream/25"
-            >
-              🌿 Je veux garder
-            </ButtonLink>
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand to-brand-700 px-6 py-14 text-center text-cream md:px-10">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-cream/10 blur-2xl"
+            />
+            <h2 className="relative font-serif text-3xl font-semibold md:text-4xl">
+              Prêt à tenter l&apos;aventure ?
+            </h2>
+            <p className="relative mx-auto mt-3 max-w-xl text-cream/85">
+              On lance cet été à Genève et dans sa région. Rejoignez les tout
+              premiers — propriétaires comme gardiens.
+            </p>
+            <div className="relative mt-7 flex flex-wrap justify-center gap-3">
+              <EnterAppButton mode="owner" variant="gold">
+                <IconPaw className="h-4 w-4" />
+                J&apos;ai un chien
+              </EnterAppButton>
+              <ButtonLink
+                href="/inscription?role=sitter"
+                variant="secondary"
+                size="lg"
+                className="bg-cream/15 text-cream hover:bg-cream/25"
+              >
+                <IconLeaf className="h-4 w-4" />
+                Je veux garder
+              </ButtonLink>
+            </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* FOOTER */}
@@ -350,17 +387,12 @@ export default function HomePage() {
 
 function Eyebrow({
   children,
-  center,
 }: {
   children: React.ReactNode;
   center?: boolean;
 }) {
   return (
-    <p
-      className={`text-xs font-semibold uppercase tracking-[0.15em] text-brand ${
-        center ? "" : ""
-      }`}
-    >
+    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
       {children}
     </p>
   );
@@ -373,7 +405,7 @@ function Dot() {
 function Check2({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-2">
-      <span className="mt-0.5 text-brand">✓</span>
+      <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
       <span>{children}</span>
     </li>
   );
