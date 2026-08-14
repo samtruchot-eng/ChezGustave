@@ -1,26 +1,20 @@
 import Link from "next/link";
 import { getMode } from "@/lib/mode";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { REFERRAL_BONUS_CHF } from "@/lib/constants";
 import { formatCHF } from "@/lib/utils";
+import { logout } from "./actions";
 
 export const metadata = { title: "Profil" };
 
 export default async function ProfilPage() {
   const mode = await getMode();
-  const me = await getCurrentUser();
-
-  if (!me) {
-    return (
-      <div className="card p-6 text-center text-muted">
-        Connectez-vous pour accéder à votre profil.
-      </div>
-    );
-  }
+  const me = await requireUser();
 
   const [applicationsCount, favoritesCount, listingsCount, bookingsCount] =
     await Promise.all([
@@ -119,8 +113,19 @@ export default async function ProfilPage() {
         </div>
       </section>
 
+      {/* Déconnexion */}
+      <form action={logout}>
+        <Button
+          type="submit"
+          variant="ghost"
+          className="w-full border border-line"
+        >
+          Se déconnecter
+        </Button>
+      </form>
+
       <p className="pb-2 text-center text-xs text-muted">
-        Chez Gustave · prototype — l&apos;authentification arrive bientôt.
+        Chez Gustave · Genève et sa région 🐾
       </p>
     </div>
   );

@@ -1,5 +1,5 @@
 import { getMode } from "@/lib/mode";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { OwnerPublishForm } from "@/components/publish/OwnerPublishForm";
 import { SitterProfileForm } from "@/components/publish/SitterProfileForm";
 import { jsonList } from "@/lib/utils";
@@ -8,7 +8,7 @@ export const metadata = { title: "Publier" };
 
 export default async function PublierPage() {
   const mode = await getMode();
-  const me = await getCurrentUser();
+  const me = await requireUser();
 
   return (
     <div className="space-y-5">

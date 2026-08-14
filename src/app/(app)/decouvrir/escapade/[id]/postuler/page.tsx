@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getListingById } from "@/lib/queries";
+import { requireUser } from "@/lib/session";
 import { Button } from "@/components/ui/Button";
 import { InsuranceBadge } from "@/components/ui/Badge";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
@@ -14,6 +15,7 @@ export default async function PostulerPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireUser();
   const { id } = await params;
   const listing = await getListingById(id);
   if (!listing) notFound();

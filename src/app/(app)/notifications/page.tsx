@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/session";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -14,7 +15,9 @@ const ICONS: Record<string, string> = {
 };
 
 export default async function NotificationsPage() {
+  const me = await requireUser();
   const notifications = await prisma.notification.findMany({
+    where: { userId: me.id },
     orderBy: { createdAt: "desc" },
     take: 30,
   });

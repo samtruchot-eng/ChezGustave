@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { REFERRAL_BONUS_CHF } from "@/lib/constants";
 import { formatCHF } from "@/lib/utils";
 
 export const metadata = { title: "Parrainage" };
 
 export default async function ParrainagePage() {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   const code = me?.referralCode ?? "GUSTAVE2026";
 
   return (

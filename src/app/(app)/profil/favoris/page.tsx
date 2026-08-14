@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { ListingCard } from "@/components/discover/ListingCard";
 
 export const metadata = { title: "Mes favoris" };
 
 export default async function FavorisPage() {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   if (!me) return null;
 
   const favorites = await prisma.favorite.findMany({

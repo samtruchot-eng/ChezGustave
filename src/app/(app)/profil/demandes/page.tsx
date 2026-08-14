@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { getMode } from "@/lib/mode";
 import { Badge } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
@@ -20,7 +20,7 @@ const statusTone: Record<ApplicationStatus, "gold" | "sage" | "terracotta" | "ne
 };
 
 export default async function DemandesPage() {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   const mode = await getMode();
   if (!me) return null;
 

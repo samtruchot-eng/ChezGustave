@@ -1,23 +1,25 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { prisma } from "./prisma";
-import { getMode } from "./mode";
 
-/**
- * Utilisateur courant — VERSION DE DÉMO.
- *
- * Tant que l'authentification (Auth.js) n'est pas branchée, on renvoie un
- * utilisateur représentatif selon le mode actif, afin que les écrans
- * Messages / Profil affichent de vraies données du seed.
- *
- * À remplacer par la vraie session `auth()` à l'étape authentification.
- */
+/** Utilisateur connecté (avec ses profils), ou null si non connecté. */
 export async function getCurrentUser() {
-  const mode = await getMode();
-  const email = mode === "sitter" ? "lea@example.ch" : "pierre@example.ch";
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return null;
 
-  const user = await prisma.user.findUnique({
-    where: { email },
+  return prisma.user.findUnique({
+    where: { id: userId },
     include: { ownerProfile: true, sitterProfile: true },
   });
+}
 
+/**
+ * Exige un utilisateur connecté : renvoie l'utilisateur, ou redirige vers la
+ * page de connexion. À utiliser dans les pages et actions protégées.
+ */
+export async function requireUser() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/connexion");
   return user;
 }

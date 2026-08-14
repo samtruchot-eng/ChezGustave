@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
+import { Avatar } from "@/components/ui/Avatar";
 import { ModeToggle } from "./ModeToggle";
 import type { ProfileMode } from "@/lib/constants";
 
 export function TopBar({
   mode,
   notificationCount = 0,
+  user,
 }: {
   mode: ProfileMode;
   notificationCount?: number;
+  user?: { id: string; name: string | null; image: string | null } | null;
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-cream/85 backdrop-blur">
@@ -18,19 +21,33 @@ export function TopBar({
         </Link>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/notifications"
-            aria-label="Notifications"
-            className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-paper text-ink-soft hover:bg-sand"
-          >
-            <BellIcon />
-            {notificationCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-terracotta px-1 text-[0.6rem] font-semibold text-cream">
-                {notificationCount > 9 ? "9+" : notificationCount}
-              </span>
-            )}
-          </Link>
-          <ModeToggle mode={mode} />
+          {user ? (
+            <>
+              <Link
+                href="/notifications"
+                aria-label="Notifications"
+                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-paper text-ink-soft hover:bg-sand"
+              >
+                <BellIcon />
+                {notificationCount > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-terracotta px-1 text-[0.6rem] font-semibold text-cream">
+                    {notificationCount > 9 ? "9+" : notificationCount}
+                  </span>
+                )}
+              </Link>
+              <ModeToggle mode={mode} />
+              <Link href="/profil" aria-label="Mon profil">
+                <Avatar src={user.image} name={user.name} size={34} />
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/connexion"
+              className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-cream hover:bg-brand-700"
+            >
+              Se connecter
+            </Link>
+          )}
         </div>
       </div>
     </header>

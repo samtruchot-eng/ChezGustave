@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 
 /** Trouve ou crée une conversation avec le destinataire, puis redirige. */
 export default async function NouveauMessagePage({
@@ -9,7 +9,7 @@ export default async function NouveauMessagePage({
   searchParams: Promise<{ to?: string }>;
 }) {
   const { to } = await searchParams;
-  const me = await getCurrentUser();
+  const me = await requireUser();
 
   if (!me || !to || to === me.id) redirect("/messages");
 

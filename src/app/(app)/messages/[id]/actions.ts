@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 
 export async function sendMessage(conversationId: string, formData: FormData) {
   const body = String(formData.get("body") ?? "").trim();
   if (!body) return;
 
-  const me = await getCurrentUser();
+  const me = await requireUser();
   if (!me) return;
 
   const convo = await prisma.conversation.findUnique({

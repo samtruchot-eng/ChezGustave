@@ -2,10 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 
 export async function applyToListing(listingId: string, formData: FormData) {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   if (!me) redirect("/decouvrir");
 
   const message = String(formData.get("message") ?? "").trim();

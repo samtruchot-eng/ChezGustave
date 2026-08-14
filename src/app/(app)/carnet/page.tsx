@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { getMode } from "@/lib/mode";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
@@ -9,7 +9,7 @@ import { formatDateRange } from "@/lib/utils";
 export const metadata = { title: "Carnet de garde" };
 
 export default async function CarnetPage() {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   const mode = await getMode();
   if (!me) return null;
 

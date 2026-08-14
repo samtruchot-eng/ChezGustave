@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { Avatar } from "@/components/ui/Avatar";
 
 export const metadata = { title: "Messages" };
 
 export default async function MessagesPage() {
-  const me = await getCurrentUser();
-  if (!me) return <DemoNotice />;
+  const me = await requireUser();
 
   const conversations = await prisma.conversation.findMany({
     where: { OR: [{ userAId: me.id }, { userBId: me.id }] },
@@ -59,14 +58,6 @@ export default async function MessagesPage() {
           })}
         </ul>
       )}
-    </div>
-  );
-}
-
-function DemoNotice() {
-  return (
-    <div className="card p-6 text-center text-muted">
-      Connectez-vous pour voir vos messages.
     </div>
   );
 }

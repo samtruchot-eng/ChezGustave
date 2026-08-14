@@ -10,7 +10,7 @@ export default function HomePage() {
       <header className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5">
         <Logo />
         <Link
-          href="/decouvrir"
+          href="/connexion"
           className="text-sm font-medium text-brand hover:underline"
         >
           Se connecter
@@ -46,8 +46,8 @@ export default function HomePage() {
 
             <p className="mt-4 text-sm text-muted">
               Déjà inscrit ?{" "}
-              <Link href="/decouvrir" className="text-brand hover:underline">
-                Entrer dans l&apos;application
+              <Link href="/connexion" className="text-brand hover:underline">
+                Se connecter
               </Link>
             </p>
           </div>

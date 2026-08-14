@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { Avatar } from "@/components/ui/Avatar";
 import { cn } from "@/lib/utils";
 import { MessageComposer } from "@/components/messages/MessageComposer";
@@ -13,7 +13,7 @@ export default async function ConversationPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const me = await getCurrentUser();
+  const me = await requireUser();
   if (!me) notFound();
 
   const convo = await prisma.conversation.findUnique({

@@ -19,7 +19,7 @@ export function EnterAppButton({
 
   function enter() {
     document.cookie = `cg_mode=${mode}; path=/; max-age=31536000; samesite=lax`;
-    router.push("/decouvrir");
+    router.push(`/inscription?role=${mode}`);
   }
 
   return (

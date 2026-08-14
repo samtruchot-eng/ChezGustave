@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/session";
 import { toJsonList } from "@/lib/utils";
 import { GEO_FALLBACK } from "@/lib/geo";
 
@@ -28,7 +28,7 @@ export async function createListing(
   _prev: ActionResult,
   formData: FormData
 ): Promise<ActionResult> {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   if (!me) return { ok: false, error: "Vous devez être connecté." };
 
   const parsed = listingSchema.safeParse(Object.fromEntries(formData));
@@ -86,7 +86,7 @@ export async function upsertSitterProfile(
   _prev: ActionResult,
   formData: FormData
 ): Promise<ActionResult> {
-  const me = await getCurrentUser();
+  const me = await requireUser();
   if (!me) return { ok: false, error: "Vous devez être connecté." };
 
   const raw = {
