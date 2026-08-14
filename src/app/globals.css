@@ -71,15 +71,13 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Léger motif organique en fond */
+/* Fond texturé : pattes en filigrane + fines lignes façon carte (ville & sentiers) */
 .bg-leaf-pattern {
   background-color: var(--color-cream);
-  background-image: radial-gradient(
-      circle at 1px 1px,
-      rgba(124, 169, 130, 0.12) 1px,
-      transparent 0
-    );
-  background-size: 22px 22px;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+PGcgZmlsbD0iI2MwNTYyYSIgZmlsbC1vcGFjaXR5PSIwLjA1Ij48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMiwyNikgcm90YXRlKC0xMikiPjxlbGxpcHNlIGN4PSI0IiBjeT0iNCIgcng9IjIuMSIgcnk9IjIuOSIvPjxlbGxpcHNlIGN4PSIxMSIgY3k9IjIiIHJ4PSIyLjIiIHJ5PSIzIi8+PGVsbGlwc2UgY3g9IjE4IiBjeT0iNCIgcng9IjIuMSIgcnk9IjIuOSIvPjxwYXRoIGQ9Ik0xMSA4YzMuMyAwIDUuNiAyLjIgNS42IDQuOCAwIDIuMS0xLjkgMy4yLTUuNiAzLjJzLTUuNi0xLjEtNS42LTMuMkM1LjQgMTAuMiA3LjcgOCAxMSA4eiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDAsMTA0KSByb3RhdGUoMTYpIj48ZWxsaXBzZSBjeD0iNCIgY3k9IjQiIHJ4PSIyLjEiIHJ5PSIyLjkiLz48ZWxsaXBzZSBjeD0iMTEiIGN5PSIyIiByeD0iMi4yIiByeT0iMyIvPjxlbGxpcHNlIGN4PSIxOCIgY3k9IjQiIHJ4PSIyLjEiIHJ5PSIyLjkiLz48cGF0aCBkPSJNMTEgOGMzLjMgMCA1LjYgMi4yIDUuNiA0LjggMCAyLjEtMS45IDMuMi01LjYgMy4ycy01LjYtMS4xLTUuNi0zLjJDNS40IDEwLjIgNy43IDggMTEgOHoiLz48L2c+PC9nPjwvc3ZnPgo="),
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgMzQwIDM0MCI+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOGQzZDFjIiBzdHJva2Utb3BhY2l0eT0iMC4wMzUiIHN0cm9rZS13aWR0aD0iMS4xIj48cGF0aCBkPSJNLTIwIDgwIEM4MCA0MCAxNjAgMTEwIDI1MCA3MCBTIDM4MCA4MCA0MDAgNjAiLz48cGF0aCBkPSJNLTIwIDE4MCBDODAgMTQwIDE2MCAyMTAgMjUwIDE3MCBTIDM4MCAxODAgNDAwIDE2MCIvPjxwYXRoIGQ9Ik0tMjAgMjgwIEM4MCAyNDAgMTYwIDMxMCAyNTAgMjcwIFMgMzgwIDI4MCA0MDAgMjYwIi8+PC9nPjwvc3ZnPgo=");
+  background-size: 150px 150px, 340px 340px;
+  background-repeat: repeat, repeat;
 }
 
 /* Scrollbar discrète */

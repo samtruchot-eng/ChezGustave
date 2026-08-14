@@ -17,7 +17,7 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="relative overflow-hidden bg-cream">
+    <div className="bg-leaf-pattern relative overflow-hidden">
       {/* Halos décoratifs */}
       <div
         aria-hidden
@@ -62,7 +62,7 @@ export default function HomePage() {
             <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
               La garde de chien à domicile qui change tout : votre compagnon
               reste chez lui, un gardien passionné vient s&apos;en occuper. Et
-              pour le gardien, une vraie escapade à la campagne — payée et logée.
+              pour le gardien, une vraie escapade au vert — payée et logée.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -210,7 +210,7 @@ export default function HomePage() {
                 Vous aimez les chiens
               </h3>
               <p className="mt-2 text-ink-soft">
-                Offrez-vous une parenthèse à la campagne : vous séjournez chez le
+                Offrez-vous une parenthèse au vert : vous séjournez chez le
                 propriétaire, veillez sur son chien… et vous êtes payé{" "}
                 <em>et</em> logé.
               </p>

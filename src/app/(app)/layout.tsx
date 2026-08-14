@@ -19,7 +19,16 @@ export default async function AppLayout({
     : 0;
 
   return (
-    <div className="bg-leaf-pattern min-h-dvh">
+    <div className="bg-leaf-pattern relative min-h-dvh overflow-hidden">
+      {/* Halos de couleur décoratifs */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed -left-24 top-24 h-72 w-72 rounded-full bg-brand/[0.07] blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed -right-24 bottom-24 h-72 w-72 rounded-full bg-sage/[0.12] blur-3xl"
+      />
       <TopBar
         mode={mode}
         notificationCount={notificationCount}
@@ -29,7 +38,9 @@ export default async function AppLayout({
             : null
         }
       />
-      <main className="mx-auto max-w-2xl px-4 pb-28 pt-4">{children}</main>
+      <main className="relative mx-auto max-w-2xl px-4 pb-28 pt-4">
+        {children}
+      </main>
       <BottomNav />
     </div>
   );
