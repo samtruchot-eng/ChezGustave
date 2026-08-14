@@ -55,9 +55,9 @@ export default function HomePage() {
               Genève et sa région · lancement cet été
             </span>
             <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.05] tracking-tight text-ink md:text-6xl">
-              Gardez un chien,
+              Le bonheur des chiens,
               <br />
-              <span className="text-brand">partez au vert.</span>
+              <span className="text-brand">la sérénité des maîtres.</span>
             </h1>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
               La garde de chien à domicile qui change tout : votre compagnon

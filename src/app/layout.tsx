@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Chez Gustave — Gardez un chien, partez au vert",
+    default: "Chez Gustave — Le bonheur des chiens, la sérénité des maîtres",
     template: "%s · Chez Gustave",
   },
   description:
