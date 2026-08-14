@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo, GustaveMark } from "@/components/ui/Logo";
+import { Logo, GustaveMark, LeashWordmark } from "@/components/ui/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { EnterAppButton } from "@/components/home/EnterAppButton";
 import { Reveal } from "@/components/ui/Reveal";
@@ -105,10 +105,13 @@ export default function HomePage() {
                 <div className="rounded-full bg-cream/15 p-6 ring-1 ring-cream/20">
                   <GustaveMark className="h-28 w-28" />
                 </div>
-                <p className="mt-5 font-serif text-2xl font-semibold text-cream">
-                  Chez Gustave
-                </p>
-                <p className="text-sm text-cream/80">
+                <LeashWordmark
+                  size={30}
+                  className="mt-5"
+                  chezColor="var(--color-cream)"
+                  scriptColor="var(--color-cream)"
+                />
+                <p className="mt-1 text-sm text-cream/80">
                   Le teckel qui a tout déclenché
                 </p>
               </div>

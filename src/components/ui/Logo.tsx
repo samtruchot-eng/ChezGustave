@@ -59,28 +59,167 @@ export function GustaveMark({ className }: { className?: string }) {
 /** Ancien nom conservé pour compatibilité. */
 export const PawMark = GustaveMark;
 
+/**
+ * Marque typographique « Chez Gustave » : « CHEZ » en Sora (moderne) +
+ * « Gustave » écrit d'un seul brin de laisse — la poignée s'accroche au G,
+ * le mousqueton pend du e, avec quelques nœuds le long du cordon.
+ *
+ * Tout est en `em` : régler `size` (hauteur de « Gustave » en px) suffit à
+ * mettre l'ensemble à l'échelle.
+ */
+export function LeashWordmark({
+  size = 26,
+  chezColor = "var(--color-ink)",
+  scriptColor = "var(--color-brand)",
+  accentColor,
+  className,
+  title = "Chez Gustave",
+}: {
+  size?: number;
+  chezColor?: string;
+  scriptColor?: string;
+  accentColor?: string;
+  className?: string;
+  title?: string;
+}) {
+  const acc = accentColor ?? scriptColor;
+  return (
+    <span
+      role="img"
+      aria-label={title}
+      className={cn("inline-flex select-none items-center", className)}
+      style={{ fontSize: size, gap: "0.08em", lineHeight: 1 }}
+    >
+      <span
+        aria-hidden
+        style={{
+          fontFamily: "var(--font-modern)",
+          fontWeight: 600,
+          fontSize: "0.33em",
+          letterSpacing: "0.075em",
+          textTransform: "uppercase",
+          color: chezColor,
+        }}
+      >
+        Chez
+      </span>
+
+      <span aria-hidden className="relative inline-flex items-center">
+        {/* Poignée accrochée au G */}
+        <svg
+          viewBox="0 0 96 96"
+          style={{
+            width: "0.5em",
+            marginRight: "-0.25em",
+            marginTop: "-0.25em",
+            flex: "0 0 auto",
+          }}
+        >
+          <path
+            fill="none"
+            stroke={acc}
+            strokeWidth="3.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M86 22 C 58 6, 18 10, 14 40 C 11 64, 44 74, 52 52 C 57 38, 38 30, 30 42"
+          />
+        </svg>
+
+        {/* « Gustave » (le cordon) + nœuds qui courent le long du brin */}
+        <span className="relative inline-block">
+          <span
+            style={{
+              fontFamily: "var(--font-script)",
+              fontSize: "1em",
+              lineHeight: 1,
+              whiteSpace: "nowrap",
+              padding: "0 0.05em",
+              color: scriptColor,
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            Gustave
+          </span>
+          <svg
+            viewBox="0 0 700 260"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            style={{ zIndex: 3 }}
+          >
+            <g
+              fill="none"
+              stroke={acc}
+              strokeWidth="6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M70 150 C 96 92, 168 84, 176 132 C 182 168, 130 172, 132 138" />
+              <path d="M470 150 C 512 196, 576 190, 582 140 C 586 104, 548 102, 552 138" />
+            </g>
+          </svg>
+        </span>
+
+        {/* Nœud final + mousqueton pendu au e */}
+        <svg
+          viewBox="0 0 200 100"
+          style={{
+            width: "1.23em",
+            marginLeft: "-0.21em",
+            marginTop: "0.11em",
+            flex: "0 0 auto",
+            zIndex: 4,
+          }}
+        >
+          <g
+            fill="none"
+            stroke={acc}
+            strokeWidth="3.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M2 50 C 30 50, 36 22, 58 30 C 82 39, 66 64, 46 55 C 30 47, 44 26, 70 30 C 98 34, 96 66, 124 58 C 140 53, 144 54, 156 54" />
+            <circle cx="162" cy="54" r="6" />
+            <path d="M168 54 C 186 49, 190 62, 183 74 C 178 82, 164 82, 161 73 L 161 60" />
+          </g>
+        </svg>
+      </span>
+    </span>
+  );
+}
+
 export function Logo({
   className,
   showWordmark = true,
   showTagline = true,
+  size = 26,
+  chezColor,
+  scriptColor,
+  accentColor,
 }: {
   className?: string;
   showWordmark?: boolean;
   showTagline?: boolean;
+  size?: number;
+  chezColor?: string;
+  scriptColor?: string;
+  accentColor?: string;
 }) {
+  if (!showWordmark) return <GustaveMark className={className} />;
   return (
-    <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <GustaveMark />
-      {showWordmark && (
-        <span className="flex flex-col leading-none">
-          <span className="font-serif text-[1.2rem] font-semibold tracking-tight text-brand">
-            Chez Gustave
-          </span>
-          {showTagline && (
-            <span className="mt-0.5 text-[0.62rem] tracking-wide text-muted">
-              Gardez un chien, partez au vert
-            </span>
-          )}
+    <span className={cn("inline-flex flex-col leading-none", className)}>
+      <LeashWordmark
+        size={size}
+        chezColor={chezColor}
+        scriptColor={scriptColor}
+        accentColor={accentColor}
+      />
+      {showTagline && (
+        <span
+          className="mt-1 pl-0.5 tracking-wide text-muted"
+          style={{ fontSize: Math.max(9, size * 0.32) }}
+        >
+          Gardez un chien, partez au vert
         </span>
       )}
     </span>

@@ -48,6 +48,9 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  /* Marque « Chez Gustave » : Sora (moderne) + Great Vibes (cordon manuscrit) */
+  --font-modern: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Great Vibes", "Segoe Script", cursive;
 }
 
 /* Titres en serif (identité chaleureuse & artisanale) */
