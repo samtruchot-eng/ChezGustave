@@ -10,6 +10,8 @@ import {
 } from "@/lib/constants";
 import { formatDateRange } from "@/lib/utils";
 import { IconInbox, IconPin, IconChevronRight } from "@/components/ui/icons";
+import { Button } from "@/components/ui/Button";
+import { acceptApplication, declineApplication } from "./actions";
 
 export const metadata = { title: "Mes demandes" };
 
@@ -110,13 +112,35 @@ async function OwnerApplications({ userId }: { userId: string }) {
               « {a.message} »
             </p>
           )}
-          <div className="mt-3 flex justify-end">
+          <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
             <Link
               href={`/messages/nouveau?to=${a.sitter.id}`}
               className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline"
             >
               Répondre <IconChevronRight className="h-3.5 w-3.5" />
             </Link>
+            {a.status === "pending" && (
+              <>
+                <form action={declineApplication.bind(null, a.id)}>
+                  <Button type="submit" variant="secondary" size="sm">
+                    Refuser
+                  </Button>
+                </form>
+                <form action={acceptApplication.bind(null, a.id)}>
+                  <Button type="submit" size="sm">
+                    Accepter & réserver
+                  </Button>
+                </form>
+              </>
+            )}
+            {a.status === "accepted" && (
+              <Link
+                href="/profil/reservations"
+                className="text-sm font-medium text-brand hover:underline"
+              >
+                Voir la réservation →
+              </Link>
+            )}
           </div>
         </li>
       ))}

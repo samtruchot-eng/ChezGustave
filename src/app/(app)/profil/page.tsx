@@ -19,6 +19,7 @@ import {
   IconCheck,
   IconLogout,
   IconPaw,
+  IconCalendar,
 } from "@/components/ui/icons";
 import { logout } from "./actions";
 
@@ -51,6 +52,12 @@ export default async function ProfilPage() {
     href: string;
     hint?: string;
   }[] = [
+    {
+      icon: IconCalendar,
+      label: "Mes réservations",
+      href: "/profil/reservations",
+      hint: `${bookingsCount}`,
+    },
     {
       icon: IconInbox,
       label: "Mes demandes",
