@@ -1,5 +1,5 @@
 import { getMode } from "@/lib/mode";
-import { getListings, getSitters } from "@/lib/queries";
+import { getListings, getSitters, type DiscoverFilters } from "@/lib/queries";
 import { DiscoverControls } from "@/components/discover/DiscoverControls";
 import { ListingCard } from "@/components/discover/ListingCard";
 import { SitterCard } from "@/components/discover/SitterCard";
@@ -14,6 +14,9 @@ type SP = Promise<{
   ambiance?: string;
   animal?: string;
   lastMinute?: string;
+  region?: string;
+  budget?: string;
+  superSitter?: string;
   view?: string;
 }>;
 
@@ -24,11 +27,15 @@ export default async function DecouvrirPage({
 }) {
   const mode = await getMode();
   const sp = await searchParams;
-  const filters = {
+  const budget = sp.budget ? Number(sp.budget) : undefined;
+  const filters: DiscoverFilters = {
     q: sp.q,
     ambiance: sp.ambiance,
     animal: sp.animal,
     lastMinute: sp.lastMinute === "1",
+    region: sp.region,
+    maxPrice: budget && !Number.isNaN(budget) ? budget : undefined,
+    superSitter: sp.superSitter === "1",
   };
   const isMap = sp.view === "map";
 
@@ -62,7 +69,7 @@ async function SitterModeResults({
   filters,
   isMap,
 }: {
-  filters: { q?: string; ambiance?: string; lastMinute?: boolean };
+  filters: DiscoverFilters;
   isMap: boolean;
 }) {
   const listings = await getListings(filters);
@@ -95,7 +102,7 @@ async function OwnerModeResults({
   filters,
   isMap,
 }: {
-  filters: { q?: string; animal?: string };
+  filters: DiscoverFilters;
   isMap: boolean;
 }) {
   const sitters = await getSitters(filters);

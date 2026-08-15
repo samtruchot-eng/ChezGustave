@@ -5,16 +5,21 @@ export interface DiscoverFilters {
   ambiance?: string; // côté gardien
   animal?: string; // côté propriétaire
   lastMinute?: boolean;
+  region?: string; // zone (les deux modes)
+  maxPrice?: number; // budget max — prix escapade / tarif jour
+  superSitter?: boolean; // uniquement les Super Gardiens (mode propriétaire)
 }
 
 /** Escapades ouvertes (vue côté gardien : je cherche une garde). */
 export async function getListings(filters: DiscoverFilters = {}) {
-  const { q, ambiance, lastMinute } = filters;
+  const { q, ambiance, lastMinute, region, maxPrice } = filters;
   return prisma.listing.findMany({
     where: {
       status: "open",
       ...(ambiance ? { ambiance } : {}),
       ...(lastMinute ? { lastMinute: true } : {}),
+      ...(region ? { region } : {}),
+      ...(maxPrice ? { price: { lte: maxPrice } } : {}),
       ...(q
         ? {
             OR: [
@@ -54,7 +59,7 @@ export async function getListingById(id: string) {
 
 /** Profils gardiens (vue côté propriétaire : je cherche un gardien). */
 export async function getSitters(filters: DiscoverFilters = {}) {
-  const { q, animal } = filters;
+  const { q, animal, region, maxPrice, superSitter } = filters;
   const sitters = await prisma.sitterProfile.findMany({
     where: {
       ...(q
@@ -68,6 +73,9 @@ export async function getSitters(filters: DiscoverFilters = {}) {
           }
         : {}),
       ...(animal ? { animalsAccepted: { contains: animal } } : {}),
+      ...(region ? { region } : {}),
+      ...(maxPrice ? { dailyRate: { lte: maxPrice } } : {}),
+      ...(superSitter ? { isSuperSitter: true } : {}),
     },
     include: {
       user: { select: { id: true, name: true, image: true } },

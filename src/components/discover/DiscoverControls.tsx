@@ -8,14 +8,22 @@ import {
   AMBIANCE_LABELS,
   ANIMALS,
   ANIMAL_LABELS,
+  LAUNCH_REGIONS,
   type ProfileMode,
 } from "@/lib/constants";
 import {
   IconSearch,
   IconClock,
+  IconCrown,
   AmbianceIcon,
   AnimalIcon,
 } from "@/components/ui/icons";
+
+const BUDGETS = [
+  { value: "150", label: "≤ 150 CHF" },
+  { value: "300", label: "≤ 300 CHF" },
+  { value: "500", label: "≤ 500 CHF" },
+];
 
 export function DiscoverControls({ mode }: { mode: ProfileMode }) {
   const router = useRouter();
@@ -27,6 +35,9 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
   const activeAmbiance = params.get("ambiance") ?? "";
   const activeAnimal = params.get("animal") ?? "";
   const lastMinute = params.get("lastMinute") === "1";
+  const activeRegion = params.get("region") ?? "";
+  const activeBudget = params.get("budget") ?? "";
+  const superSitter = params.get("superSitter") === "1";
 
   const update = useCallback(
     (patch: Record<string, string | null>) => {
@@ -83,6 +94,48 @@ export function DiscoverControls({ mode }: { mode: ProfileMode }) {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Zone + budget */}
+      <div className="flex flex-wrap gap-2">
+        <select
+          value={activeRegion}
+          onChange={(e) => update({ region: e.target.value || null })}
+          className="rounded-full border border-line bg-paper px-3 py-2 text-sm text-ink-soft outline-none focus:border-sage"
+          aria-label="Zone"
+        >
+          <option value="">Toutes les zones</option>
+          {LAUNCH_REGIONS.map((r) => (
+            <option key={r} value={r}>
+              {r}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={activeBudget}
+          onChange={(e) => update({ budget: e.target.value || null })}
+          className="rounded-full border border-line bg-paper px-3 py-2 text-sm text-ink-soft outline-none focus:border-sage"
+          aria-label="Budget"
+        >
+          <option value="">
+            {mode === "owner" ? "Tarif / jour" : "Budget"}
+          </option>
+          {BUDGETS.map((b) => (
+            <option key={b.value} value={b.value}>
+              {b.label}
+            </option>
+          ))}
+        </select>
+
+        {mode === "owner" && (
+          <FilterChip
+            active={superSitter}
+            onClick={() => update({ superSitter: superSitter ? null : "1" })}
+          >
+            <IconCrown className="h-4 w-4" /> Super Gardien
+          </FilterChip>
+        )}
       </div>
 
       {/* Filtres */}
