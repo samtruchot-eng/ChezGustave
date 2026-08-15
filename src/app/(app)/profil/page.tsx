@@ -73,6 +73,12 @@ export default async function ProfilPage() {
     },
     { icon: IconBook, label: "Carnet de garde", href: "/carnet" },
     {
+      icon: IconCalendar,
+      label: "Mes disponibilités",
+      href: "/profil/disponibilites",
+      hint: "Gardien",
+    },
+    {
       icon: IconShield,
       label: "Mes paiements",
       href: "/profil/paiements",
