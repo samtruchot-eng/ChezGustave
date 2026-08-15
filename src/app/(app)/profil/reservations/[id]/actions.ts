@@ -10,6 +10,7 @@ import {
   isStripeConfigured,
 } from "@/lib/stripe";
 import { formatDateRange } from "@/lib/utils";
+import { recomputeSitterRating } from "@/lib/reviews";
 
 async function loadOwnBooking(bookingId: string) {
   const me = await requireUser();
@@ -66,6 +67,58 @@ export async function payForBooking(bookingId: string) {
   });
 
   redirect(session.url);
+}
+
+/**
+ * Laisse un avis (note 1–5 + commentaire) après une garde terminée.
+ * Un seul avis par auteur et par réservation ; met à jour la note du gardien.
+ */
+export async function submitReview(bookingId: string, formData: FormData) {
+  const me = await requireUser();
+
+  const rating = Number(formData.get("rating"));
+  const comment = String(formData.get("comment") ?? "").trim() || null;
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) return;
+
+  const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+  if (!booking) return;
+  const iAmOwner = booking.ownerId === me.id;
+  const iAmSitter = booking.sitterId === me.id;
+  if (!iAmOwner && !iAmSitter) return;
+  if (booking.status !== "completed") return;
+
+  const targetId = iAmOwner ? booking.sitterId : booking.ownerId;
+
+  const existing = await prisma.review.findFirst({
+    where: { bookingId, authorId: me.id },
+  });
+  if (existing) return;
+
+  await prisma.review.create({
+    data: {
+      authorId: me.id,
+      targetId,
+      bookingId,
+      listingId: booking.listingId,
+      rating,
+      comment,
+    },
+  });
+
+  await recomputeSitterRating(targetId);
+
+  await prisma.notification.create({
+    data: {
+      userId: targetId,
+      type: "review_received",
+      title: "Nouvel avis reçu",
+      body: comment ? comment.slice(0, 120) : `Vous avez reçu ${rating}/5 ★.`,
+      link: `/profil/reservations/${bookingId}`,
+    },
+  });
+
+  revalidatePath(`/profil/reservations/${bookingId}`);
+  revalidatePath("/decouvrir");
 }
 
 /** Passe la garde « en cours ». */

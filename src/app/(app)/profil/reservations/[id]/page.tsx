@@ -21,11 +21,14 @@ import {
 } from "@/components/ui/icons";
 import { isStripeConfigured, retrieveCheckoutSession } from "@/lib/stripe";
 import { markBookingPaid } from "@/lib/payments";
+import { Rating } from "@/components/ui/Rating";
+import { ReviewForm } from "@/components/reviews/ReviewForm";
 import {
   startBooking,
   completeBooking,
   cancelBooking,
   payForBooking,
+  submitReview,
 } from "./actions";
 
 const STEPS: { key: BookingStatus; label: string }[] = [
@@ -93,6 +96,14 @@ export default async function ReservationDetail({
   const sitterPayReady = !!sitterProfile?.stripeChargesEnabled;
   const paid = booking.paymentStatus === "paid";
   const canPayOnline = isStripeConfigured();
+
+  // Avis (uniquement quand la garde est terminée)
+  const myReview =
+    booking.status === "completed"
+      ? await prisma.review.findFirst({
+          where: { bookingId: booking.id, authorId: me.id },
+        })
+      : null;
 
   const iAmOwner = booking.ownerId === me.id;
   const other = iAmOwner ? booking.sitter : booking.owner;
@@ -265,6 +276,31 @@ export default async function ReservationDetail({
           <IconChat className="h-4 w-4" /> Discuter
         </ButtonLink>
       </div>
+
+      {/* Avis après garde */}
+      {status === "completed" && (
+        <section className="card p-5">
+          <h2 className="font-semibold text-ink">
+            {myReview ? "Votre avis" : `Noter votre ${iAmOwner ? "gardien" : "propriétaire"}`}
+          </h2>
+          {myReview ? (
+            <div className="mt-2">
+              <Rating value={myReview.rating} />
+              {myReview.comment && (
+                <p className="mt-1 text-sm text-ink-soft">{myReview.comment}</p>
+              )}
+              <p className="mt-2 text-xs text-muted">Merci pour votre retour !</p>
+            </div>
+          ) : (
+            <div className="mt-3">
+              <ReviewForm
+                action={submitReview.bind(null, booking.id)}
+                targetName={other.name ?? "votre binôme"}
+              />
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Actions cycle de vie */}
       {!cancelled && status !== "completed" && (
