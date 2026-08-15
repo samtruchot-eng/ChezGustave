@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/Badge";
 import { GustaveMark } from "@/components/ui/Logo";
 import { IconBook, IconRoute, IconCamera } from "@/components/ui/icons";
 import { formatDateRange } from "@/lib/utils";
+import { CarnetComposer } from "@/components/carnet/CarnetComposer";
+import { addCareLogEntry } from "./actions";
 
 export const metadata = { title: "Carnet de garde" };
 
@@ -47,6 +49,9 @@ export default async function CarnetPage() {
 
   const dog = booking.listing.dog;
   const counterpart = mode === "sitter" ? booking.owner : booking.sitter;
+  const iAmSitter = booking.sitterId === me.id;
+  const canPost =
+    iAmSitter && ["in_progress", "confirmed"].includes(booking.status);
 
   return (
     <div className="space-y-5">
@@ -90,20 +95,32 @@ export default async function CarnetPage() {
         </div>
       </section>
 
+      {/* Le gardien partage des nouvelles */}
+      {canPost && (
+        <CarnetComposer
+          action={addCareLogEntry.bind(null, booking.id)}
+          dogName={dog.name}
+        />
+      )}
+
       {/* Nouvelles quotidiennes */}
       <div className="space-y-4">
+        {booking.careLog.length === 0 && (
+          <div className="card p-6 text-center text-sm text-muted">
+            {canPost
+              ? `Partagez la première photo de ${dog.name} ci-dessus 🐾`
+              : `${counterpart.name} n'a pas encore publié de nouvelles.`}
+          </div>
+        )}
         {booking.careLog.map((entry) => (
           <article key={entry.id} className="card overflow-hidden">
             {entry.photo && (
-              <div className="relative aspect-[16/10] w-full bg-sand">
-                <Image
-                  src={entry.photo}
-                  alt="Photo du jour"
-                  fill
-                  sizes="640px"
-                  className="object-cover"
-                />
-              </div>
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={entry.photo}
+                alt="Photo du jour"
+                className="aspect-[16/10] w-full bg-sand object-cover"
+              />
             )}
             <div className="p-4">
               <p className="text-xs font-medium uppercase tracking-wide text-muted">
@@ -116,10 +133,11 @@ export default async function CarnetPage() {
               {entry.note && (
                 <p className="mt-1 text-ink-soft">{entry.note}</p>
               )}
-              <div className="mt-3 flex items-center gap-2 text-sm text-muted">
-                <IconRoute className="h-4 w-4 text-brand" /> Balade du jour
-                <span className="chip">2,4 km · 45 min</span>
-              </div>
+              {entry.walkPath && (
+                <div className="mt-3 flex items-center gap-2 text-sm text-muted">
+                  <IconRoute className="h-4 w-4 text-brand" /> Balade du jour
+                </div>
+              )}
             </div>
           </article>
         ))}
