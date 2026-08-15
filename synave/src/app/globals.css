@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Synave — design system
+   Identité : bleu nuit « ingénierie », signal électrique, menthe.
+   Une pointe de rouge suisse, réservée au volet création de société.
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* Fonds sombres */
+  --color-night: #060b18;
+  --color-night-800: #0c1426;
+  --color-night-700: #16203a;
+  --color-night-600: #1e2a45;
+
+  /* Fonds clairs */
+  --color-paper: #ffffff;
+  --color-mist: #f4f7fc;
+  --color-mist-200: #e9eff9;
+
+  /* Signal (couleur de marque) */
+  --color-signal: #3b6cff;
+  --color-signal-600: #2a55db;
+  --color-signal-700: #1e3fa8;
+  --color-signal-300: #8fa9ff;
+  --color-signal-100: #e4ebff;
+
+  /* Menthe (accent secondaire) */
+  --color-mint: #35e0bc;
+  --color-mint-600: #13b99a;
+  --color-mint-100: #dcfbf3;
+
+  /* Rouge suisse (volet création de société) */
+  --color-swiss: #e1382b;
+  --color-swiss-600: #c22a1e;
+  --color-swiss-100: #fde8e6;
+
+  /* Encre & texte */
+  --color-ink: #0a1122;
+  --color-ink-soft: #4e5a72;
+  --color-muted: #8b95aa;
+
+  /* Bordures */
+  --color-line: #e2e8f4;
+  --color-line-dark: #1e2a45;
+
+  /* Rayons */
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+
+  /* Typo */
+  --font-sans:
+    "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display:
+    "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono:
+    ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+/* Focus visible cohérent sur toute l'interface */
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar discrète */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-signal-300) transparent;
+}
+
+@layer components {
+  /* Carte claire standard */
+  .card {
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-2xl);
+    box-shadow:
+      0 1px 2px rgba(10, 17, 34, 0.04),
+      0 12px 32px -18px rgba(10, 17, 34, 0.28);
+  }
+
+  /* Carte sur fond sombre */
+  .card-dark {
+    background-color: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-2xl);
+    backdrop-filter: blur(8px);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+  }
+
+  .chip-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.72);
+    white-space: nowrap;
+  }
+}
+
+@layer utilities {
+  /* Dégradé de texte signal → menthe */
+  .text-gradient {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-signal-300),
+      var(--color-mint)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-ink {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-signal),
+      var(--color-mint-600)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Grille technique en filigrane (fonds sombres) */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center;
+  }
+
+  /* Grille technique en filigrane (fonds clairs) */
+  .bg-grid-light {
+    background-image:
+      linear-gradient(rgba(10, 17, 34, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10, 17, 34, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center;
+  }
+
+  /* Halo lumineux derrière les blocs héro */
+  .glow-signal {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(59, 108, 255, 0.42) 0%,
+      rgba(59, 108, 255, 0) 100%
+    );
+  }
+
+  .glow-mint {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(53, 224, 188, 0.3) 0%,
+      rgba(53, 224, 188, 0) 100%
+    );
+  }
+
+  /* Masque de fondu vertical pour les décors */
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+@keyframes pulse-node {
+  0%,
+  100% {
+    opacity: 0.35;
+    r: 3;
+  }
+  50% {
+    opacity: 1;
+    r: 4.5;
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -220;
+  }
+}
+
+.animate-dash {
+  stroke-dasharray: 6 10;
+  animation: dash-flow 9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-float,
+  .animate-dash,
+  .animate-fade-in-up {
+    animation: none;
+  }
+}
