@@ -18,7 +18,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  // Connexion « pooled » (rapide) pour l'app en temps réel…
   url      = env("DATABASE_URL")
+  // …et connexion directe pour les migrations / prisma db push (build).
+  // Repli sur DATABASE_URL si DIRECT_URL n'est pas défini (dev local).
+  directUrl = env("DIRECT_URL")
 }
 
 // ------------------------------------------------------------------
