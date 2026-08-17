@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getListingById } from "@/lib/queries";
 import { requireUser } from "@/lib/session";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { InsuranceBadge } from "@/components/ui/Badge";
 import { IconPin } from "@/components/ui/icons";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
@@ -80,9 +80,9 @@ export default async function PostulerPage({
             className="w-full rounded-xl border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-sage"
           />
         </label>
-        <Button type="submit" size="lg" className="w-full">
+        <SubmitButton size="lg" className="w-full">
           Envoyer ma candidature
-        </Button>
+        </SubmitButton>
         <p className="text-center text-xs text-muted">
           En postulant, vous acceptez les conditions de garde de Chez Gustave.
         </p>

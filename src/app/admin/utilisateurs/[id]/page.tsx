@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Rating } from "@/components/ui/Rating";
 import { formatCHF, formatDateRange, jsonList } from "@/lib/utils";
 import {
@@ -87,22 +87,20 @@ export default async function AdminUserDetail({
         <div className="mt-3 flex flex-wrap gap-2">
           {user.ownerProfile && (
             <form action={verifyOwner}>
-              <Button
-                type="submit"
+              <SubmitButton
                 variant={user.ownerProfile.verified ? "secondary" : "primary"}
                 size="sm"
               >
                 {user.ownerProfile.verified
                   ? "Retirer « vérifié » (proprio)"
                   : "Vérifier le propriétaire"}
-              </Button>
+              </SubmitButton>
             </form>
           )}
           {user.sitterProfile && (
             <>
               <form action={verifySitter}>
-                <Button
-                  type="submit"
+                <SubmitButton
                   variant={
                     user.sitterProfile.verified ? "secondary" : "primary"
                   }
@@ -111,11 +109,10 @@ export default async function AdminUserDetail({
                   {user.sitterProfile.verified
                     ? "Retirer « vérifié » (gardien)"
                     : "Vérifier le gardien"}
-                </Button>
+                </SubmitButton>
               </form>
               <form action={superSitter}>
-                <Button
-                  type="submit"
+                <SubmitButton
                   variant={
                     user.sitterProfile.isSuperSitter ? "secondary" : "gold"
                   }
@@ -124,7 +121,7 @@ export default async function AdminUserDetail({
                   {user.sitterProfile.isSuperSitter
                     ? "Retirer Super Gardien"
                     : "Nommer Super Gardien"}
-                </Button>
+                </SubmitButton>
               </form>
             </>
           )}

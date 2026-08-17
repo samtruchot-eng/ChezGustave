@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Badge } from "@/components/ui/Badge";
 import { IconCheck, IconShield, IconClock } from "@/components/ui/icons";
 import { isStripeConfigured, isAccountReady } from "@/lib/stripe";
@@ -118,9 +118,9 @@ export default async function PaiementsPage() {
             <Point>Versements automatiques après chaque garde</Point>
           </ul>
           <form action={startSitterOnboarding} className="mt-4">
-            <Button type="submit" className="w-full">
+            <SubmitButton className="w-full">
               {hasAccount ? "Continuer avec Stripe" : "Configurer mes paiements"}
-            </Button>
+            </SubmitButton>
           </form>
           <p className="mt-3 text-center text-xs text-muted">
             Sécurisé par Stripe · vos données bancaires ne transitent pas par

@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { REFERRAL_BONUS_CHF } from "@/lib/constants";
 import { formatCHF } from "@/lib/utils";
@@ -172,14 +172,10 @@ export default async function ProfilPage() {
 
       {/* Déconnexion */}
       <form action={logout}>
-        <Button
-          type="submit"
-          variant="ghost"
-          className="w-full border border-line"
-        >
+        <SubmitButton variant="ghost" className="w-full border border-line">
           <IconLogout className="h-4 w-4" />
           Se déconnecter
-        </Button>
+        </SubmitButton>
       </form>
 
       <p className="flex items-center justify-center gap-1.5 pb-2 text-center text-xs text-muted">

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { IconCalendar, IconCheck } from "@/components/ui/icons";
 import { formatDateRange } from "@/lib/utils";
 import { addAvailability, removeAvailability } from "./actions";
@@ -87,9 +87,9 @@ export default async function DisponibilitesPage() {
                   />
                 </label>
               </div>
-              <Button type="submit" className="w-full">
+              <SubmitButton className="w-full">
                 <IconCheck className="h-4 w-4" /> Ajouter
-              </Button>
+              </SubmitButton>
             </form>
           </section>
 

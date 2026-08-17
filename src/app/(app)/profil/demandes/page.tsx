@@ -10,7 +10,7 @@ import {
 } from "@/lib/constants";
 import { formatDateRange } from "@/lib/utils";
 import { IconInbox, IconPin, IconChevronRight } from "@/components/ui/icons";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { acceptApplication, declineApplication } from "./actions";
 
 export const metadata = { title: "Mes demandes" };
@@ -122,14 +122,12 @@ async function OwnerApplications({ userId }: { userId: string }) {
             {a.status === "pending" && (
               <>
                 <form action={declineApplication.bind(null, a.id)}>
-                  <Button type="submit" variant="secondary" size="sm">
+                  <SubmitButton variant="secondary" size="sm">
                     Refuser
-                  </Button>
+                  </SubmitButton>
                 </form>
                 <form action={acceptApplication.bind(null, a.id)}>
-                  <Button type="submit" size="sm">
-                    Accepter & réserver
-                  </Button>
+                  <SubmitButton size="sm">Accepter & réserver</SubmitButton>
                 </form>
               </>
             )}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { formatDateRange } from "@/lib/utils";
 import {
   APPLICATION_STATUS_LABELS,
@@ -95,16 +95,14 @@ export default async function AdminApplicationsPage() {
                 <div className="mt-3 flex justify-end gap-2">
                   {a.status !== "accepted" && (
                     <form action={accept}>
-                      <Button type="submit" size="sm">
-                        Accepter
-                      </Button>
+                      <SubmitButton size="sm">Accepter</SubmitButton>
                     </form>
                   )}
                   {a.status !== "rejected" && (
                     <form action={reject}>
-                      <Button type="submit" size="sm" variant="secondary">
+                      <SubmitButton size="sm" variant="secondary">
                         Refuser
-                      </Button>
+                      </SubmitButton>
                     </form>
                   )}
                 </div>
