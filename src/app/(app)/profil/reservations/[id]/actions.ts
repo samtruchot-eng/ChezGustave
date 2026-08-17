@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import {
@@ -119,6 +119,7 @@ export async function submitReview(bookingId: string, formData: FormData) {
 
   revalidatePath(`/profil/reservations/${bookingId}`);
   revalidatePath("/decouvrir");
+  revalidateTag("sitters");
 }
 
 /** Passe la garde « en cours ». */
@@ -177,4 +178,5 @@ export async function cancelBooking(bookingId: string) {
 
   revalidatePath(`/profil/reservations/${bookingId}`);
   revalidatePath("/profil/reservations");
+  revalidateTag("listings");
 }

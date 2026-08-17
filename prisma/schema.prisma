@@ -147,6 +147,9 @@ model SitterProfile {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([region])
+  @@index([isSuperSitter, ratingAvg])
 }
 
 model Availability {

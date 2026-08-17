@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
 
@@ -15,6 +15,7 @@ export async function toggleSitterVerified(userId: string) {
   });
   revalidatePath(`/admin/utilisateurs/${userId}`);
   revalidatePath("/admin/utilisateurs");
+  revalidateTag("sitters");
 }
 
 /** Attribue / retire le badge Super Gardien. */
@@ -27,6 +28,7 @@ export async function toggleSuperSitter(userId: string) {
     data: { isSuperSitter: !sp.isSuperSitter },
   });
   revalidatePath(`/admin/utilisateurs/${userId}`);
+  revalidateTag("sitters");
 }
 
 /** Vérifie / dé-vérifie un profil propriétaire. */
@@ -39,6 +41,7 @@ export async function toggleOwnerVerified(userId: string) {
     data: { verified: !op.verified },
   });
   revalidatePath(`/admin/utilisateurs/${userId}`);
+  revalidateTag("sitters");
 }
 
 /** Change le statut d'une candidature (accepter / refuser / remettre en attente). */
@@ -111,5 +114,7 @@ export async function resetDemoData(
   revalidatePath("/admin");
   revalidatePath("/admin/utilisateurs");
   revalidatePath("/decouvrir");
+  revalidateTag("listings");
+  revalidateTag("sitters");
   return `${count} compte${count > 1 ? "s" : ""} de démo supprimé${count > 1 ? "s" : ""}. La base est propre. ✅`;
 }
