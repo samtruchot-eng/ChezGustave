@@ -79,3 +79,37 @@ export async function setApplicationStatus(
   revalidatePath("/admin/candidatures");
   revalidatePath("/admin");
 }
+
+/**
+ * Supprime les comptes de démonstration (e-mails en @example.ch) et, par
+ * cascade, toutes leurs données (profils, chiens, escapades, réservations,
+ * messages, avis…). N'affecte PAS les vrais comptes. Réservé aux admins.
+ * Une confirmation textuelle « SUPPRIMER » est requise.
+ */
+const DEMO_EMAIL_SUFFIX = "@example.ch";
+
+export async function resetDemoData(
+  _prev: string | undefined,
+  formData: FormData
+): Promise<string> {
+  await requireAdmin();
+
+  const confirm = String(formData.get("confirm") ?? "").trim();
+  if (confirm !== "SUPPRIMER") {
+    return "Confirmation incorrecte — tapez SUPPRIMER en majuscules.";
+  }
+
+  const count = await prisma.user.count({
+    where: { email: { endsWith: DEMO_EMAIL_SUFFIX } },
+  });
+  if (count === 0) return "Aucun compte de démo à supprimer.";
+
+  await prisma.user.deleteMany({
+    where: { email: { endsWith: DEMO_EMAIL_SUFFIX } },
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/utilisateurs");
+  revalidatePath("/decouvrir");
+  return `${count} compte${count > 1 ? "s" : ""} de démo supprimé${count > 1 ? "s" : ""}. La base est propre. ✅`;
+}
