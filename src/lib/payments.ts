@@ -1,4 +1,6 @@
+import { after } from "next/server";
 import { prisma } from "./prisma";
+import { sendUserEmail } from "./email";
 
 /**
  * Marque une réservation comme payée (idempotent).
@@ -34,4 +36,14 @@ export async function markBookingPaid(opts: {
       link: `/profil/reservations/${booking.id}`,
     },
   });
+
+  after(() =>
+    sendUserEmail(booking.sitterId, {
+      subject: "Paiement reçu 💸",
+      heading: "Une garde vient d'être réglée",
+      intro: "Votre versement est en route.",
+      ctaText: "Voir la réservation",
+      ctaPath: `/profil/reservations/${booking.id}`,
+    })
+  );
 }

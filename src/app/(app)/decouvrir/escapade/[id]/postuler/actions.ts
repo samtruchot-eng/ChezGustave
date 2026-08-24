@@ -1,8 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
+import { sendUserEmail } from "@/lib/email";
 
 export async function applyToListing(listingId: string, formData: FormData) {
   const me = await requireUser();
@@ -33,6 +35,17 @@ export async function applyToListing(listingId: string, formData: FormData) {
       link: "/profil/demandes",
     },
   });
+
+  after(() =>
+    sendUserEmail(listing.ownerId, {
+      subject: "Nouvelle candidature sur votre escapade",
+      heading: "Vous avez une nouvelle candidature 🎉",
+      intro: `${me.name} souhaite garder ${listing.dog.name}.`,
+      bodyLines: message ? [`« ${message} »`] : [],
+      ctaText: "Voir la candidature",
+      ctaPath: "/profil/demandes",
+    })
+  );
 
   redirect(`/decouvrir/escapade/${listingId}?applied=1`);
 }
