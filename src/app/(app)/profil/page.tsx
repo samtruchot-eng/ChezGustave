@@ -85,6 +85,12 @@ export default async function ProfilPage() {
       hint: "Gardien",
     },
     {
+      icon: IconShield,
+      label: "Sécurité",
+      href: "/profil/securite",
+      hint: "Mot de passe",
+    },
+    {
       icon: IconGift,
       label: "Parrainage",
       href: "/profil/parrainage",
