@@ -9,7 +9,7 @@ export const LEGAL = {
   /** Adresse e-mail de contact publiée. */
   contactEmail: null as string | null,
   /** Pays où l'activité est établie : il détermine le droit applicable. */
-  country: null as "CH" | "FR" | null,
+  country: "CH" as "CH" | "FR" | null,
   /** Date d'entrée en vigueur de la version affichée. */
   version: "18 novembre 2026",
 } as const;
