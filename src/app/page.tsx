@@ -6,7 +6,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import {
   IconLeaf,
   IconPaw,
-  IconShield,
   IconHome,
   IconBook,
   IconStar,
@@ -77,9 +76,6 @@ export default function HomePage() {
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
-              <span className="inline-flex items-center gap-1.5">
-                <Dot /> Garde assurée
-              </span>
               <span className="inline-flex items-center gap-1.5">
                 <Dot /> Gardiens vérifiés
               </span>
@@ -152,7 +148,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-5 py-8 sm:grid-cols-4">
           {[
             { Icon: IconHome, label: "À domicile", sub: "Chez lui, dans ses repères" },
-            { Icon: IconShield, label: "Assuré", sub: "Chaque garde couverte" },
+            { Icon: IconStar, label: "Avis", sub: "Après chaque garde" },
             { Icon: IconBook, label: "Carnet de garde", sub: "Photos & nouvelles" },
             { Icon: IconCheck, label: "Vérifié", sub: "Profils de confiance" },
           ].map((t, i) => (
@@ -256,7 +252,7 @@ export default function HomePage() {
               {
                 n: "3",
                 title: "Une garde sereine",
-                body: "Garde assurée, paiement sécurisé, et un carnet de garde avec photos chaque jour.",
+                body: "Paiement sécurisé, et un carnet de garde avec photos chaque jour.",
               },
             ].map((s, i) => (
               <Reveal key={s.n} variant="scale" delay={i * 130}>

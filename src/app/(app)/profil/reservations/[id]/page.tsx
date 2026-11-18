@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { Avatar } from "@/components/ui/Avatar";
-import { Badge, InsuranceBadge } from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
@@ -265,8 +265,6 @@ export default async function ReservationDetail({
           </div>
         )}
       </section>
-
-      <InsuranceBadge />
 
       {/* Accès rapides */}
       <div className="grid grid-cols-2 gap-3">

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getListingById } from "@/lib/queries";
-import { Badge, InsuranceBadge } from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
 import { Rating } from "@/components/ui/Rating";
 import { ButtonLink } from "@/components/ui/Button";
@@ -113,8 +113,6 @@ export default async function EscapadePage({
           </span>
         </div>
       </div>
-
-      <InsuranceBadge />
 
       {listing.description && (
         <p className="text-ink-soft">{listing.description}</p>

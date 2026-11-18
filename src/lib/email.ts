@@ -49,8 +49,20 @@ export async function sendEmail(params: {
         }),
       }
     );
+    if (!res.ok) {
+      // Visible dans le journal de l'hébergeur : sans cette ligne, un refus de
+      // Brevo (clé inactive, IP bloquée, expéditeur non vérifié) passe inaperçu.
+      const detail = (await res.text().catch(() => "")).slice(0, 500);
+      console.error(
+        `[email] Brevo a refusé l'envoi « ${params.subject} » : HTTP ${res.status} ${detail}`
+      );
+    }
     return res.ok;
-  } catch {
+  } catch (error) {
+    console.error(
+      `[email] Brevo injoignable pour l'envoi « ${params.subject} » :`,
+      error
+    );
     return false;
   }
 }

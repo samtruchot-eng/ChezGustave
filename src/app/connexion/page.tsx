@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { IconBulb } from "@/components/ui/icons";
 import { getCurrentUser } from "@/lib/session";
 
 export const metadata = { title: "Connexion" };
@@ -50,15 +49,6 @@ export default async function ConnexionPage({
           </Link>
         </p>
       </div>
-
-      <p className="mt-4 flex max-w-sm items-start gap-2 rounded-xl bg-sand/60 px-4 py-3 text-xs text-ink-soft">
-        <IconBulb className="mt-0.5 h-4 w-4 shrink-0 text-gold-600" />
-        <span>
-          Comptes de démo : <strong>pierre@example.ch</strong> ou{" "}
-          <strong>lea@example.ch</strong> — mot de passe{" "}
-          <strong>gustave123</strong>
-        </span>
-      </p>
     </div>
   );
 }

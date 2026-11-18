@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
-import { IconStar, IconShield } from "./icons";
+import { IconStar } from "./icons";
 
 type Tone = "brand" | "sage" | "gold" | "neutral" | "terracotta";
 
@@ -39,16 +39,6 @@ export function SuperSitterBadge({ className }: { className?: string }) {
   return (
     <Badge tone="gold" className={cn("font-semibold", className)}>
       <IconStar className="h-3.5 w-3.5" /> Super Gardien
-    </Badge>
-  );
-}
-
-/** Bandeau « Garde couverte par l'assurance Chez Gustave ». */
-export function InsuranceBadge({ className }: { className?: string }) {
-  return (
-    <Badge tone="sage" className={className}>
-      <IconShield className="h-3.5 w-3.5" /> Garde couverte par l&apos;assurance
-      Chez Gustave
     </Badge>
   );
 }
