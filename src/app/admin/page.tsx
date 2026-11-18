@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/icons";
 import { formatCHF, formatDateRange } from "@/lib/utils";
 import { DemoResetForm } from "@/components/admin/DemoResetForm";
+import { serviceStatuses } from "@/lib/services";
 import {
   APPLICATION_STATUS_LABELS,
   type ApplicationStatus,
@@ -219,6 +220,25 @@ export default async function AdminDashboard() {
           </div>
         </section>
       </div>
+
+      {/* État des services externes (jamais de clé affichée) */}
+      <section className="card p-5">
+        <h2 className="font-semibold text-ink">État des services</h2>
+        <ul className="mt-3 divide-y divide-line">
+          {serviceStatuses().map((s) => (
+            <li
+              key={s.name}
+              className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2.5"
+            >
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-ink">{s.name}</p>
+                <p className="text-xs text-muted">{s.detail}</p>
+              </div>
+              <Badge tone={s.tone}>{s.state}</Badge>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       {/* Zone sensible : nettoyage des données de démo */}
       {demoCount > 0 && (
