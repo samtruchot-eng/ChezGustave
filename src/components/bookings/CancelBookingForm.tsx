@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/Button";
 export function CancelBookingForm({
   action,
   consequence,
+  showTermsLink,
 }: {
   action: (prev: string | undefined) => Promise<string | undefined>;
   consequence: string;
+  showTermsLink: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [error, formAction, pending] = useActionState(action, undefined);
@@ -33,13 +35,15 @@ export function CancelBookingForm({
     >
       <p className="text-sm font-medium text-ink">Annuler cette garde ?</p>
       <p className="text-sm text-ink-soft">{consequence}</p>
-      <p className="text-xs text-muted">
-        Règle détaillée dans les{" "}
-        <Link href="/conditions" className="underline hover:text-brand">
-          conditions générales
-        </Link>
-        .
-      </p>
+      {showTermsLink && (
+        <p className="text-xs text-muted">
+          Règle détaillée dans les{" "}
+          <Link href="/conditions" className="underline hover:text-brand">
+            conditions générales
+          </Link>
+          .
+        </p>
+      )}
 
       {error && (
         <p role="alert" className="rounded-xl bg-terracotta/10 px-3 py-2 text-sm text-terracotta">

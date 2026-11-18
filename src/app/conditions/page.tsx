@@ -1,10 +1,16 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
 import { PLATFORM_COMMISSION_PERCENT } from "@/lib/constants";
 import { computeBreakdown } from "@/lib/money";
 import { formatCHF } from "@/lib/utils";
-import { CANCELLATION, LEGAL, isLegalComplete } from "@/lib/legal";
+import {
+  CANCELLATION,
+  LEGAL,
+  conditionsPublished,
+  isLegalComplete,
+} from "@/lib/legal";
 
 export const metadata = {
   title: "Conditions générales",
@@ -348,6 +354,8 @@ const sections: Section[] = [
 ];
 
 export default function ConditionsPage() {
+  if (!conditionsPublished) notFound();
+
   return (
     <div className="bg-leaf-pattern min-h-dvh px-4 py-10">
       <div className="mx-auto max-w-2xl">

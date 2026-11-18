@@ -28,7 +28,7 @@ import { Rating } from "@/components/ui/Rating";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { CancelBookingForm } from "@/components/bookings/CancelBookingForm";
 import { planCancellation } from "@/lib/cancellation";
-import { CANCELLATION } from "@/lib/legal";
+import { CANCELLATION, conditionsPublished } from "@/lib/legal";
 import {
   startBooking,
   completeBooking,
@@ -353,6 +353,7 @@ export default async function ReservationDetail({
             <CancelBookingForm
               action={cancelBooking.bind(null, booking.id)}
               consequence={cancelConsequence}
+              showTermsLink={conditionsPublished}
             />
           </div>
         </section>

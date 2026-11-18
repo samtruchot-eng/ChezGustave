@@ -19,6 +19,14 @@ export const isLegalComplete =
   LEGAL.contactEmail !== null &&
   LEGAL.country !== null;
 
+/**
+ * Les conditions sont-elles visibles du public ? Tant qu'elles sont
+ * incomplètes, la page et les liens qui y mènent n'existent pas sur le site de
+ * production : on ne les voit qu'en aperçu et en local.
+ */
+export const conditionsPublished =
+  isLegalComplete || process.env.VERCEL_ENV !== "production";
+
 /** Annulation par le propriétaire d'une garde déjà payée. */
 export const CANCELLATION = {
   /** Remboursement intégral jusqu'à ce nombre de jours avant le début. */
