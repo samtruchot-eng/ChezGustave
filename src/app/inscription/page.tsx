@@ -4,6 +4,7 @@ import { Logo } from "@/components/ui/Logo";
 import { SignupForm } from "@/components/auth/SignupForm";
 import { getCurrentUser } from "@/lib/session";
 import type { ProfileMode } from "@/lib/constants";
+import { conditionsPublished } from "@/lib/legal";
 
 export const metadata = { title: "Inscription" };
 
@@ -41,7 +42,15 @@ export default async function InscriptionPage({
       </div>
 
       <p className="mt-4 max-w-sm text-center text-xs text-muted">
-        En créant un compte, vous acceptez les conditions de Chez Gustave.
+        En créant un compte, vous acceptez les{" "}
+        {conditionsPublished ? (
+          <Link href="/conditions" className="underline hover:text-brand">
+            conditions générales
+          </Link>
+        ) : (
+          "conditions"
+        )}{" "}
+        de Chez Gustave.
       </p>
     </div>
   );

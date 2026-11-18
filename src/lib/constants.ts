@@ -88,10 +88,15 @@ export const BOOKING_STATUS_LABELS: Record<BookingStatus, string> = {
 };
 
 /** Statut de paiement en ligne d'une réservation. */
-export type PaymentStatus = "unpaid" | "paid" | "refunded";
+export type PaymentStatus =
+  | "unpaid"
+  | "paid"
+  | "partially_refunded"
+  | "refunded";
 export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
   unpaid: "À régler",
   paid: "Payé",
+  partially_refunded: "Remboursé en partie",
   refunded: "Remboursé",
 };
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { conditionsPublished } from "@/lib/legal";
 import { Logo, GustaveMark, LeashWordmark } from "@/components/ui/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { EnterAppButton } from "@/components/home/EnterAppButton";
@@ -383,6 +384,11 @@ export default function HomePage() {
             Prototype — les paiements et l&apos;assurance sont en cours de mise
             en place.
           </p>
+          {conditionsPublished && (
+            <Link href="/conditions" className="text-xs underline hover:text-brand">
+              Conditions générales
+            </Link>
+          )}
         </div>
       </footer>
     </div>

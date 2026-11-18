@@ -2,14 +2,18 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import {
   appBaseUrl,
   createBookingCheckoutSession,
   isStripeConfigured,
+  refundBookingPayment,
 } from "@/lib/stripe";
-import { formatDateRange } from "@/lib/utils";
+import { planCancellation } from "@/lib/cancellation";
+import { sendUserEmail } from "@/lib/email";
+import { formatCHF, formatDateRange } from "@/lib/utils";
 import { recomputeSitterRating } from "@/lib/reviews";
 
 async function loadOwnBooking(bookingId: string) {
@@ -145,38 +149,101 @@ export async function completeBooking(bookingId: string) {
   revalidatePath(`/profil/reservations/${bookingId}`);
 }
 
-/** Annule la garde (et rouvre l'escapade). */
-export async function cancelBooking(bookingId: string) {
+/**
+ * Annule la garde, rembourse le propriétaire selon les conditions générales
+ * et rouvre l'escapade. Renvoie un message si l'annulation n'a pas eu lieu.
+ */
+export async function cancelBooking(
+  bookingId: string
+): Promise<string | undefined> {
   const ctx = await loadOwnBooking(bookingId);
-  if (!ctx || ["completed", "cancelled"].includes(ctx.booking.status)) return;
+  if (!ctx) return "Réservation introuvable.";
+  const { me, booking } = ctx;
+  if (["completed", "cancelled"].includes(booking.status)) {
+    return "Cette garde ne peut plus être annulée.";
+  }
 
+  const cancelledBy = me.id === booking.ownerId ? "owner" : "sitter";
+  const plan = planCancellation(booking, cancelledBy);
+
+  // Le remboursement part avant l'annulation : s'il échoue, rien ne change et
+  // personne ne se retrouve avec une garde annulée mais toujours payée.
+  let stripeRefundId: string | null = null;
+  if (plan.refundAmount > 0) {
+    if (!booking.stripePaymentIntentId) {
+      return "Le paiement de cette garde est introuvable : écrivez-nous pour l'annuler.";
+    }
+    try {
+      stripeRefundId = await refundBookingPayment({
+        bookingId,
+        paymentIntentId: booking.stripePaymentIntentId,
+        amountChf: plan.refundAmount,
+      });
+    } catch (error) {
+      console.error(`[remboursement] échec pour la réservation ${bookingId} :`, error);
+      return "Le remboursement n'a pas pu être lancé : la garde n'est pas annulée. Réessayez dans un instant ou écrivez-nous.";
+    }
+  }
+
+  const now = new Date();
   await prisma.$transaction([
     prisma.booking.update({
       where: { id: bookingId },
-      data: { status: "cancelled" },
+      data: {
+        status: "cancelled",
+        cancelledAt: now,
+        cancelledBy,
+        ...(plan.refundAmount > 0
+          ? {
+              paymentStatus:
+                plan.percent === 100 ? "refunded" : "partially_refunded",
+              refundAmount: plan.refundAmount,
+              refundedAt: now,
+              stripeRefundId,
+            }
+          : {}),
+      },
     }),
     prisma.listing.update({
-      where: { id: ctx.booking.listingId },
+      where: { id: booking.listingId },
       data: { status: "open" },
     }),
   ]);
 
-  // Notifie l'autre partie.
-  const other =
-    ctx.me.id === ctx.booking.ownerId
-      ? ctx.booking.sitterId
-      : ctx.booking.ownerId;
+  const refundLine = !plan.paid
+    ? ""
+    : plan.refundAmount === 0
+      ? " Aucun remboursement n'est dû : la garde avait commencé."
+      : plan.percent === 100
+        ? ` Le propriétaire est remboursé intégralement (${formatCHF(plan.refundAmount)}).`
+        : ` Le propriétaire est remboursé de ${formatCHF(plan.refundAmount)} (${plan.percent} %) ; le gardien conserve ${formatCHF(plan.sitterKeeps)}.`;
+  const who = cancelledBy === "owner" ? "Le propriétaire" : "Le gardien";
+  const summary = `${who} a annulé la garde.${refundLine}`;
+  const link = `/profil/reservations/${bookingId}`;
+
   await prisma.notification.create({
     data: {
-      userId: other,
+      userId: cancelledBy === "owner" ? booking.sitterId : booking.ownerId,
       type: "booking_cancelled",
       title: "Garde annulée",
-      body: "Une garde a été annulée.",
-      link: `/profil/reservations/${bookingId}`,
+      body: summary,
+      link,
     },
   });
 
-  revalidatePath(`/profil/reservations/${bookingId}`);
+  after(async () => {
+    for (const userId of [booking.ownerId, booking.sitterId]) {
+      await sendUserEmail(userId, {
+        subject: "Garde annulée",
+        heading: "Une garde a été annulée",
+        intro: summary,
+        ctaText: "Voir la réservation",
+        ctaPath: link,
+      });
+    }
+  });
+
+  revalidatePath(link);
   revalidatePath("/profil/reservations");
   revalidateTag("listings");
 }

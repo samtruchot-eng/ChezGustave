@@ -9,7 +9,9 @@ import { SubmitButton } from "@/components/ui/SubmitButton";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
 import {
   BOOKING_STATUS_LABELS,
+  PAYMENT_STATUS_LABELS,
   type BookingStatus,
+  type PaymentStatus,
 } from "@/lib/constants";
 import {
   IconCalendar,
@@ -24,6 +26,9 @@ import { isStripeConfigured, retrieveCheckoutSession } from "@/lib/stripe";
 import { markBookingPaid } from "@/lib/payments";
 import { Rating } from "@/components/ui/Rating";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
+import { CancelBookingForm } from "@/components/bookings/CancelBookingForm";
+import { planCancellation } from "@/lib/cancellation";
+import { CANCELLATION, conditionsPublished } from "@/lib/legal";
 import {
   startBooking,
   completeBooking,
@@ -112,6 +117,21 @@ export default async function ReservationDetail({
   const status = booking.status as BookingStatus;
   const stepIndex = STEPS.findIndex((s) => s.key === status);
   const cancelled = status === "cancelled";
+  const refunded =
+    booking.paymentStatus === "refunded" ||
+    booking.paymentStatus === "partially_refunded";
+
+  // Ce que déclencherait une annulation maintenant, annoncé avant de confirmer.
+  const plan = planCancellation(booking, iAmOwner ? "owner" : "sitter");
+  const cancelConsequence = !plan.paid
+    ? "La garde n'a pas encore été réglée : aucune somme n'est en jeu."
+    : iAmOwner
+      ? plan.percent === 100
+        ? `Vous serez remboursé intégralement : ${formatCHF(plan.refundAmount)}.`
+        : plan.percent === 0
+          ? "La garde a commencé : aucun remboursement n'est prévu."
+          : `La garde commence dans moins de ${CANCELLATION.fullRefundDays} jours : vous serez remboursé de ${formatCHF(plan.refundAmount)} (${plan.percent} %). Le reste dédommage votre gardien.`
+      : `Le propriétaire sera remboursé intégralement (${formatCHF(plan.refundAmount)}) et votre versement sera repris.`;
 
   return (
     <div className="space-y-5">
@@ -190,7 +210,11 @@ export default async function ReservationDetail({
       <section className="card p-5">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-ink">Paiement</h2>
-          {paid ? (
+          {refunded ? (
+            <Badge tone="neutral">
+              {PAYMENT_STATUS_LABELS[booking.paymentStatus as PaymentStatus]}
+            </Badge>
+          ) : paid ? (
             <Badge tone="sage">
               <IconCheck className="h-3.5 w-3.5" /> Payé
             </Badge>
@@ -206,7 +230,7 @@ export default async function ReservationDetail({
             − {formatCHF(booking.commissionAmount)}
           </Row>
           <div className="mt-1 border-t border-line pt-2">
-            <Row label={iAmOwner ? "À régler" : "Vous recevez"}>
+            <Row label={iAmOwner ? (paid || refunded ? "Réglé" : "À régler") : "Vous recevez"}>
               <span className="font-semibold text-brand">
                 {iAmOwner
                   ? formatCHF(booking.amount)
@@ -217,7 +241,15 @@ export default async function ReservationDetail({
         </div>
 
         {/* État & actions de paiement */}
-        {paid ? (
+        {refunded ? (
+          <p className="mt-3 rounded-xl bg-sand/60 px-3 py-2 text-xs text-ink-soft">
+            {iAmOwner
+              ? `${formatCHF(booking.refundAmount)} vous ont été remboursés sur votre moyen de paiement. Le délai d'arrivée dépend de votre banque.`
+              : booking.paymentStatus === "refunded"
+                ? `La garde a été remboursée intégralement au propriétaire (${formatCHF(booking.refundAmount)}).`
+                : `${formatCHF(booking.refundAmount)} ont été remboursés au propriétaire. Vous conservez le reste de votre versement.`}
+          </p>
+        ) : paid ? (
           <p className="mt-3 flex items-center gap-2 rounded-xl bg-sage-100/70 px-3 py-2 text-xs text-pine">
             <IconCheck className="h-4 w-4 shrink-0" />
             {iAmOwner
@@ -318,11 +350,11 @@ export default async function ReservationDetail({
                 </SubmitButton>
               </form>
             )}
-            <form action={cancelBooking.bind(null, booking.id)}>
-              <SubmitButton variant="ghost" size="sm">
-                Annuler
-              </SubmitButton>
-            </form>
+            <CancelBookingForm
+              action={cancelBooking.bind(null, booking.id)}
+              consequence={cancelConsequence}
+              showTermsLink={conditionsPublished}
+            />
           </div>
         </section>
       )}
