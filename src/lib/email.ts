@@ -31,21 +31,24 @@ export async function sendEmail(params: {
   const senderName = process.env.BREVO_SENDER_NAME ?? "Chez Gustave";
 
   try {
-    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "api-key": key,
-        "content-type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify({
-        sender: { email: senderEmail, name: senderName },
-        to: [{ email: params.to, name: params.toName ?? undefined }],
-        subject: params.subject,
-        htmlContent: params.html,
-        ...(params.text ? { textContent: params.text } : {}),
-      }),
-    });
+    const res = await fetch(
+      process.env.BREVO_API_URL ?? "https://api.brevo.com/v3/smtp/email",
+      {
+        method: "POST",
+        headers: {
+          "api-key": key,
+          "content-type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          sender: { email: senderEmail, name: senderName },
+          to: [{ email: params.to, name: params.toName ?? undefined }],
+          subject: params.subject,
+          htmlContent: params.html,
+          ...(params.text ? { textContent: params.text } : {}),
+        }),
+      }
+    );
     return res.ok;
   } catch {
     return false;
