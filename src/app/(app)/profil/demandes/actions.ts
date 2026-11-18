@@ -1,10 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { computeBreakdown } from "@/lib/money";
+import { sendUserEmail } from "@/lib/email";
+import { formatDateRange } from "@/lib/utils";
 
 /**
  * Le propriétaire accepte une candidature :
@@ -75,8 +78,20 @@ export async function acceptApplication(applicationId: string) {
     },
   });
 
+  after(() =>
+    sendUserEmail(app.sitterId, {
+      subject: "Votre garde est confirmée 🐾",
+      heading: `Garde confirmée : ${listing.dog.name}`,
+      intro: "Bonne nouvelle, votre candidature a été acceptée !",
+      bodyLines: [`Dates : ${formatDateRange(listing.startDate, listing.endDate)}`],
+      ctaText: "Voir ma réservation",
+      ctaPath: `/profil/reservations/${booking.id}`,
+    })
+  );
+
   revalidatePath("/profil/demandes");
   revalidatePath("/profil/reservations");
+  revalidateTag("listings");
   redirect(`/profil/reservations/${booking.id}`);
 }
 

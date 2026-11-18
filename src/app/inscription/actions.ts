@@ -1,12 +1,14 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { after } from "next/server";
 import { AuthError } from "next-auth";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { signIn } from "@/auth";
 import { MODE_COOKIE } from "@/lib/mode";
+import { sendEmail, renderBrandedEmail } from "@/lib/email";
 
 const schema = z.object({
   name: z.string().min(1, "Votre nom est requis."),
@@ -60,6 +62,24 @@ export async function register(
           }),
     },
   });
+
+  // Email de bienvenue (après la réponse, ne bloque pas l'inscription).
+  after(() =>
+    sendEmail({
+      to: normalizedEmail,
+      toName: name.trim(),
+      subject: "Bienvenue chez Gustave 🐾",
+      html: renderBrandedEmail({
+        heading: `Bienvenue, ${firstName} !`,
+        intro: "Votre compte Chez Gustave est prêt.",
+        bodyLines: [
+          "Trouvez un gardien de confiance pour votre chien, ou proposez vos services et vivez de belles escapades — tout se passe ici.",
+        ],
+        ctaText: "Découvrir",
+        ctaPath: "/decouvrir",
+      }),
+    }).catch(() => {})
+  );
 
   // Pré-sélectionne le bon mode (Propriétaire / Gardien).
   const store = await cookies();

@@ -4,7 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge, InsuranceBadge } from "@/components/ui/Badge";
-import { Button, ButtonLink } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
 import {
   BOOKING_STATUS_LABELS,
@@ -237,9 +238,9 @@ export default async function ReservationDetail({
                 </p>
               )}
               <form action={payForBooking.bind(null, booking.id)}>
-                <Button type="submit" className="w-full">
+                <SubmitButton className="w-full">
                   <IconShield className="h-4 w-4" /> Payer {formatCHF(booking.amount)}
-                </Button>
+                </SubmitButton>
               </form>
               <p className="mt-2 text-center text-xs text-muted">
                 Paiement sécurisé par Stripe.
@@ -309,22 +310,20 @@ export default async function ReservationDetail({
           <div className="flex flex-wrap gap-2">
             {status === "confirmed" && (
               <form action={startBooking.bind(null, booking.id)}>
-                <Button type="submit" size="sm">
-                  Démarrer la garde
-                </Button>
+                <SubmitButton size="sm">Démarrer la garde</SubmitButton>
               </form>
             )}
             {(status === "confirmed" || status === "in_progress") && (
               <form action={completeBooking.bind(null, booking.id)}>
-                <Button type="submit" variant="secondary" size="sm">
+                <SubmitButton variant="secondary" size="sm">
                   Marquer terminée
-                </Button>
+                </SubmitButton>
               </form>
             )}
             <form action={cancelBooking.bind(null, booking.id)}>
-              <Button type="submit" variant="ghost" size="sm">
+              <SubmitButton variant="ghost" size="sm">
                 Annuler
-              </Button>
+              </SubmitButton>
             </form>
           </div>
         </section>

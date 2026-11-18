@@ -13,6 +13,7 @@ import {
   IconChat,
 } from "@/components/ui/icons";
 import { formatCHF, formatDateRange } from "@/lib/utils";
+import { DemoResetForm } from "@/components/admin/DemoResetForm";
 import {
   APPLICATION_STATUS_LABELS,
   type ApplicationStatus,
@@ -36,6 +37,7 @@ export default async function AdminDashboard() {
     recentListings,
     recentApplications,
     volume,
+    demoCount,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.ownerProfile.count(),
@@ -66,6 +68,7 @@ export default async function AdminDashboard() {
       },
     }),
     prisma.booking.aggregate({ _sum: { amount: true, commissionAmount: true } }),
+    prisma.user.count({ where: { email: { endsWith: "@example.ch" } } }),
   ]);
 
   return (
@@ -216,6 +219,18 @@ export default async function AdminDashboard() {
           </div>
         </section>
       </div>
+
+      {/* Zone sensible : nettoyage des données de démo */}
+      {demoCount > 0 && (
+        <section className="card border border-terracotta/30 p-5">
+          <h2 className="font-semibold text-terracotta">Zone sensible</h2>
+          <p className="mt-1 text-sm text-muted">
+            Avant d&apos;ouvrir aux vrais utilisateurs, supprimez les comptes de
+            démonstration et leurs données.
+          </p>
+          <DemoResetForm demoCount={demoCount} />
+        </section>
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
@@ -69,6 +69,7 @@ export async function createListing(
   });
 
   revalidatePath("/decouvrir");
+  revalidateTag("listings");
   redirect(`/decouvrir/escapade/${listing.id}`);
 }
 
@@ -128,5 +129,6 @@ export async function upsertSitterProfile(
   });
 
   revalidatePath("/decouvrir");
+  revalidateTag("listings");
   redirect(`/decouvrir/gardien/${me.id}`);
 }
