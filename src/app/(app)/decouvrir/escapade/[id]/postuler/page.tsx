@@ -3,7 +3,6 @@ import Link from "next/link";
 import { getListingById } from "@/lib/queries";
 import { requireUser } from "@/lib/session";
 import { SubmitButton } from "@/components/ui/SubmitButton";
-import { InsuranceBadge } from "@/components/ui/Badge";
 import { IconPin } from "@/components/ui/icons";
 import { formatCHF, formatDateRange, nightsBetween } from "@/lib/utils";
 import { computeBreakdown } from "@/lib/money";
@@ -64,8 +63,6 @@ export default async function PostulerPage({
           </div>
         </div>
       </section>
-
-      <InsuranceBadge />
 
       {/* Formulaire */}
       <form action={apply} className="card space-y-3 p-5">
