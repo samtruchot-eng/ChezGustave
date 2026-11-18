@@ -15,9 +15,21 @@ export function getStripe(): Stripe | null {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) return null;
   if (!cached) {
-    cached = new Stripe(key, { typescript: true });
+    cached = new Stripe(key, { typescript: true, ...testApiTarget() });
   }
   return cached;
+}
+
+/** En test, STRIPE_API_BASE dirige le client vers un faux serveur Stripe. */
+function testApiTarget(): Stripe.StripeConfig {
+  const base = process.env.STRIPE_API_BASE;
+  if (!base) return {};
+  const url = new URL(base);
+  return {
+    host: url.hostname,
+    port: url.port,
+    protocol: url.protocol === "http:" ? "http" : "https",
+  };
 }
 
 /** URL publique de l'app (pour les retours Stripe). */
@@ -134,6 +146,35 @@ export async function createBookingCheckoutSession(params: {
   });
 
   return { id: session.id, url: session.url };
+}
+
+/**
+ * Rembourse tout ou partie d'une garde au propriétaire.
+ * Le paiement avait été viré au gardien, commission prélevée : Stripe reprend
+ * au gardien et rend à la plateforme sa commission dans la même proportion que
+ * le remboursement. Lève une erreur si Stripe refuse.
+ */
+export async function refundBookingPayment(params: {
+  bookingId: string;
+  paymentIntentId: string;
+  amountChf: number;
+}): Promise<string> {
+  const stripe = getStripe();
+  if (!stripe) throw new Error("Stripe n'est pas configuré");
+
+  const refund = await stripe.refunds.create(
+    {
+      payment_intent: params.paymentIntentId,
+      amount: toStripeAmount(params.amountChf),
+      reverse_transfer: true,
+      refund_application_fee: true,
+      reason: "requested_by_customer",
+      metadata: { bookingId: params.bookingId },
+    },
+    // Un second clic ou une reprise après erreur ne rembourse pas deux fois.
+    { idempotencyKey: `remboursement-${params.bookingId}` }
+  );
+  return refund.id;
 }
 
 /** Récupère une session Checkout (pour réconcilier au retour). */

@@ -298,11 +298,18 @@ model Booking {
   status String @default("pending") // "pending" | "confirmed" | "in_progress" | "completed" | "cancelled"
 
   // Paiement en ligne (Stripe)
-  paymentStatus           String    @default("unpaid") // "unpaid" | "paid" | "refunded"
+  paymentStatus           String    @default("unpaid") // "unpaid" | "paid" | "partially_refunded" | "refunded"
   paidAt                  DateTime?
   stripeCheckoutSessionId String?
   stripePaymentIntentId   String?
   stripeTransferId        String?
+
+  // Annulation et remboursement
+  cancelledAt    DateTime?
+  cancelledBy    String? // "owner" | "sitter"
+  refundAmount   Int       @default(0) // remboursé au propriétaire (CHF)
+  refundedAt     DateTime?
+  stripeRefundId String?
 
   careLog CareLogEntry[]
   reviews Review[]
