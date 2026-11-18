@@ -383,6 +383,9 @@ export default function HomePage() {
             Prototype — les paiements et l&apos;assurance sont en cours de mise
             en place.
           </p>
+          <Link href="/conditions" className="text-xs underline hover:text-brand">
+            Conditions générales
+          </Link>
         </div>
       </footer>
     </div>

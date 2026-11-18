@@ -41,7 +41,11 @@ export default async function InscriptionPage({
       </div>
 
       <p className="mt-4 max-w-sm text-center text-xs text-muted">
-        En créant un compte, vous acceptez les conditions de Chez Gustave.
+        En créant un compte, vous acceptez les{" "}
+        <Link href="/conditions" className="underline hover:text-brand">
+          conditions générales
+        </Link>{" "}
+        de Chez Gustave.
       </p>
     </div>
   );
