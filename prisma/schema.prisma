@@ -46,6 +46,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  passwordResetTokens PasswordResetToken[]
 
   dogs      Dog[]
   listings  Listing[] // escapades publiées en tant que propriétaire
@@ -103,6 +104,21 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// Lien « mot de passe oublié ». Le jeton en clair n'existe que dans l'e-mail :
+// la base ne garde que son empreinte SHA-256, inutilisable si elle fuit.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // ------------------------------------------------------------------
